@@ -21,7 +21,6 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install gdb python$( python -c 'import sys; print("%d.%d" % sys.version_info[:2])' )-dbg || true
   - sudo apt-get install openssl -y
-  - pip install unittest
   - pip install cython
   - pip install numpy
   - dpkg -l | grep gdb || true
