@@ -140,7 +140,7 @@ def _blake_hash(hash):
 def _fugue_hash(hash):
 	cdef char output[32];
 	cdef uint32_t input_len = len(hash);
-	_fugue_hash(hash, output, input_len);
+	fugue_hash(hash, output, input_len);
 	return output[:32];
 
 def _qubit_hash(hash):
