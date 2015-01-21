@@ -1,0 +1,42 @@
+language: python
+
+python:
+  - 2.6
+  - 2.7
+  - 3.2
+  - 3.3
+  - 3.4
+  - pypy
+  - pypy3
+
+env:
+  - BACKEND=c
+  - BACKEND=cpp
+
+branches:
+  only:
+    - master
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install gdb python$( python -c 'import sys; print("%d.%d" % sys.version_info[:2])' )-dbg || true
+  - sudo apt-get install openssl -y
+  - pip install cython
+  - pip install numpy
+  - dpkg -l | grep gdb || true
+
+install:
+  - python setup.py install
+
+script:
+  - python test.py
+
+matrix:
+  allow_failures:
+    - python: pypy
+    - python: pypy3
+  exclude:
+    - python: pypy
+      env: BACKEND=cpp
+    - python: pypy3
+      env: BACKEND=cpp      
