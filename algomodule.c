@@ -255,7 +255,7 @@ void __Pyx_call_destructor(T* x) {
 #include "x14/x14.h"
 #include "neoscrypt/neoscrypt.h"
 #include "dcrypt/dcrypt.h"
-#include "lyra2re/lyra2re.h"
+#include "lyra2re/Lyra2RE.h"
 #include "bitblock/bitblock.h"
 #include "yescrypt/yescrypt.h"
 #include "twe/twe.h"

@@ -64,7 +64,7 @@ cdef extern from "neoscrypt/neoscrypt.h":
 cdef extern from "dcrypt/dcrypt.h":
 	extern void dcrypt_hash(const char* input, char* output, uint32_t len);
 
-cdef extern from "lyra2re/lyra2re.h":
+cdef extern from "lyra2re/Lyra2RE.h":
 	extern void lyra2re_hash(const char* input, char* output);
 
 cdef extern from "bitblock/bitblock.h":

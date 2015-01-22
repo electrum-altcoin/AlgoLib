@@ -9,7 +9,7 @@ setup(
 		  './twe','./3s','./x17','./jh'],
     sources = ['algomodule.pyx','scrypt/scrypt.c','bcrypt/bcrypt.c','bitblock/bitblock.c','blake/blake.c',
 	       'cryptonight/cryptonight.c', 'dcrypt/dcrypt.c', 'fresh/fresh.c','fugue/fugue.c','groestl/groestl.c',
-	       'hefty1/hefty1.c', 'keccak/keccak.c','lyra2re/lyra2re.c','neoscrypt/neoscrypt.c','nist5/nist5.c','quark/quark.c',
+	       'hefty1/hefty1.c', 'keccak/keccak.c','lyra2re/Lyra2RE.c','neoscrypt/neoscrypt.c','nist5/nist5.c','quark/quark.c',
 	       'qubit/qubit.c', 'sha1/sha1.c', 'shavite3/shavite3.c','skein/skein.c','x11/x11.c','x13/x13.c','x14/x14.c',
 	       'x15/x15.c','sha3/aes_helper.c','sha3/sph_blake.c','sha3/sph_fugue.c',    
 	       'sha3/sph_keccak.c','sha3/sph_simd.c','sha3/hamsi.c','sha3/sph_bmw.c','sha3/sph_groestl.c','sha3/sph_luffa.c',
