@@ -9,12 +9,13 @@ except ImportError:
     cythonize = None
 
 EXCLUDE_SOURCES = [
-	'./src/sha3/haval_helper.c', './src/sha3/md_helper.c'
+	'.\src\sha3\haval_helper.c', '.\src\sha3\md_helper.c'
 ]
 
 ROOT_DIR = '.'
 SOURCES = [y for x in os.walk(ROOT_DIR) for y in glob(os.path.join(x[0], '*.c'))]
 INCLUDE_DIRS = [os.path.join(ROOT_DIR, o) for o in os.listdir(ROOT_DIR) if os.path.isdir(os.path.join(ROOT_DIR, o))]
+INCLUDE_DIRS.append('C:/Program Files/OpenSSL-Win64/include')
 
 extensions = [
 	Extension(
