@@ -53,9 +53,9 @@ else:
 
 setup(
     name = "algomodule",
-    version = "1.0.0",
+    version = "1.0.1",
     url = "https://github.com/electrum-altcoin/algomodule",
     author = "Ahmed Bodiwala",
-	author_email = "ahmedbodi@crypto-expert.com",
+    author_email = "ahmedbodi@crypto-expert.com",
     ext_modules=extensions,
 )
