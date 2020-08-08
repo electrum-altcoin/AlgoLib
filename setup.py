@@ -10,12 +10,16 @@ except ImportError:
 
 EXCLUDE_SOURCES = [
 	'.\src\sha3\haval_helper.c', '.\src\sha3\md_helper.c'
+] if os.name == 'nt' else [
+    './src/sha3/haval_helper.c', './src/sha3/md_helper.c'
+
 ]
 
 ROOT_DIR = '.'
 SOURCES = [y for x in os.walk(ROOT_DIR) for y in glob(os.path.join(x[0], '*.c'))]
 INCLUDE_DIRS = [os.path.join(ROOT_DIR, o) for o in os.listdir(ROOT_DIR) if os.path.isdir(os.path.join(ROOT_DIR, o))]
-INCLUDE_DIRS.append('C:/Program Files/OpenSSL-Win64/include')
+if os.name == 'nt':
+    INCLUDE_DIRS.append('C:/Program Files/OpenSSL-Win64/include')
 
 extensions = [
 	Extension(
@@ -54,7 +58,7 @@ else:
 
 setup(
     name = "algomodule",
-    version = "1.0.1",
+    version = "1.0.2",
     url = "https://github.com/electrum-altcoin/algomodule",
     author = "Ahmed Bodiwala",
     author_email = "ahmedbodi@crypto-expert.com",
