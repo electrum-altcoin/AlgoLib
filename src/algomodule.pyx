@@ -43,9 +43,6 @@ cdef extern from "x13/x13.h":
 cdef extern from "nist5/nist5.h":
 	extern void nist5_hash(const char* input, char* output, uint32_t input_len);
 
-cdef extern from "sha1/sha1.h":
-	extern void sha1_hash(const char* input, char* output, uint32_t input_len);
-
 cdef extern from "x15/x15.h":
 	extern void x15_hash(const char* input, char* output, uint32_t input_len);
 
@@ -163,12 +160,6 @@ def _nist5_hash(hash):
 	cdef char output[32];
 	cdef uint32_t input_len = len(hash);
 	nist5_hash(hash, output, input_len);
-	return output[:32];
-
-def _sha1_hash(hash):	
-	cdef char output[32];
-	cdef uint32_t input_len = len(hash);
-	sha1_hash(hash, output, input_len);
 	return output[:32];
 
 def _x15_hash(hash):
