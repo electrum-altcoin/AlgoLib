@@ -31,6 +31,7 @@
  *
  * @author   Thomas Pornin <thomas.pornin@cryptolog.com>
  */
+#include <stddef.h>
 #undef SPH_XCAT
 #define SPH_XCAT(a, b)    SPH_XCAT_(a, b)
 #undef SPH_XCAT_

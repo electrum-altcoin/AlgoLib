@@ -9,8 +9,6 @@ except ImportError:
     cythonize = None
 
 EXCLUDE_SOURCES = [
-	'.\src\sha3\haval_helper.c', '.\src\sha3\md_helper.c'
-] if os.name == 'nt' else [
     './src/sha3/haval_helper.c', './src/sha3/md_helper.c'
 
 ]
@@ -58,7 +56,7 @@ else:
 
 setup(
     name = "algomodule",
-    version = "1.0.2",
+    version = "1.0.3",
     url = "https://github.com/electrum-altcoin/algomodule",
     author = "Ahmed Bodiwala",
     author_email = "ahmedbodi@crypto-expert.com",

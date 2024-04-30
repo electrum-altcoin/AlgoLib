@@ -8,5 +8,4 @@ teststart = '700000005d385ba114d079970b29a9418fd0549e7d68a95c7f168621a3142010000
 testbin = unhexlify(teststart)
 bin_len = len(testbin)
 
-for algo in dir(algomodule):
-	print(algo)
+print(algomodule._quark_hash(testbin))
