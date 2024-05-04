@@ -16,15 +16,31 @@ EXCLUDE_SOURCES = [
     os.path.join(ROOT_DIR, 'src', 'sha3', 'md_helper.c'),
 ]
 LIBRARIES = ['crypto']
+LIBRARY_DIRS = []
+
 if is_win32:
   LIBRARIES = ['libcrypto']
+  INCLUDE_DIRS += [
+    'C:\Program Files\OpenSSL\include',
+    'C:\Program Files\OpenSSL\lib',
+  ]
+  LIBRARY_DIRS = [
+    'C:\Program Files\OpenSSL\include',
+    'C:\Program Files\OpenSSL\lib',
+  ]
+else:
+  INCLUDE_DIRS += [
+    '/usr/local/include',
+    '/usr/include'
+  ]
 
 extensions = [
 	Extension(
 		"algomodule",
-		include_dirs=INCLUDE_DIRS + ['/usr/local/include', '/usr/include'],
+		include_dirs=INCLUDE_DIRS,
 		sources=list(filter(lambda x: x not in EXCLUDE_SOURCES, SOURCES)),
-                libraries=LIBRARIES,
+        library_dirs=LIBRARY_DIRS,
+        libraries=LIBRARIES,
 	)
 ]
 
