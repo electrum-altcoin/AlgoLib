@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 import os
 from glob import glob
-from setuptools import setup, find_packages, Extension
+from setuptools import setup, Extension
+
 
 EXCLUDE_SOURCES = [
-    './src/sha3/haval_helper.c', './src/sha3/md_helper.c'
+    os.path.join('src', 'sha3', 'haval_helper.c'),
+    os.path.join('src', 'sha3', 'md_helper.c'),
 ]
 
 ROOT_DIR = '.'
