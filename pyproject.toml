@@ -1,0 +1,78 @@
+[project]
+name = "algomodule"
+version = "1.0.4"
+description = "CryptoCurrency Hashing Library"
+readme = "README.md"
+license = { text = "Proprietary"}
+requires-python = ">=2.6"
+authors = [
+    { name = "Ahmed Bodiwala", email = "ahmedbodi@crypto-expert.com" },
+]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: C",
+    "Programming Language :: Cython",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+
+[project.urls]
+Code = "https://github.com/electrum-altcoin/AlgoLib"
+Homepage = "https://github.com/electrum-altcoin/AlgoLib"
+"Issue tracker" = "https://github.com/electrum-altcoin/AlgoLib/issues"
+
+[build-system]
+requires = [
+    'setuptools',
+    'cython',
+    'wheel'
+]
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+skip = "pp*"
+
+[tool.cibuildwheel.macos]
+before-all = [
+    "brew install openssl",
+]
+
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "10.9"  # required for full C++11 support
+
+[[tool.cibuildwheel.overrides]]
+before-all = [
+    "yum install -y glibc-static",  # needed for libutil.a and libdl.a
+    "./tools/cibuildwheel/setup_ccache_on_manylinux.sh",
+    "./tools/cibuildwheel/setup_openssl.sh",
+]
+before-test = "ccache -s"
+select = "*-manylinux_*"
+
+[tool.cibuildwheel.overrides.environment]  # sub-table of previous block!
+PATH = "/usr/local/ccache/bin:$PATH"
+
+[[tool.cibuildwheel.overrides]]
+before-all = [
+    "apk add ccache openssl-dev openssl-libs-static",
+    "./tools/cibuildwheel/setup_openssl.sh",
+]
+before-test = "ccache -s"
+select = "*-musllinux_*"
+
+[tool.cibuildwheel.overrides.environment]  # sub-table of previous block!
+PATH = "/usr/lib/ccache/bin:$PATH"
+
+[[tool.cibuildwheel.overrides]]
+before-all = [
+    "bash -c 'choco install --no-progress --x86 openssl'",  # choco only allows EITHER 32 OR 64-bit version of a package
+]
+select = "*-win32"
+
+[[tool.cibuildwheel.overrides]]
+before-all = [
+    "bash -c 'choco install --no-progress openssl'",        # choco only allows EITHER 32 OR 64-bit version of a package
+]
+select = "*-win_amd64"

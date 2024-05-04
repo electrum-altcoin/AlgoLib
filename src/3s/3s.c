@@ -1,12 +1,12 @@
-#include "3s.h"
+#include "3s/3s.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
 
-#include "../sha3/sph_shavite.h"
-#include "../sha3/sph_simd.h"
-#include "../sha3/sph_skein.h"
+#include "sha3/sph_shavite.h"
+#include "sha3/sph_simd.h"
+#include "sha3/sph_skein.h"
 
 
 extern void threes_hash(const char* input, char* output)
