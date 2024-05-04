@@ -22,7 +22,7 @@ extensions = [
 
 setup(
     name = "algomodule",
-    version = "1.0.4",
+    version = "1.0.5",
     url = "https://github.com/electrum-altcoin/algomodule",
     author = "Ahmed Bodiwala",
     author_email = "ahmedbodi@crypto-expert.com",

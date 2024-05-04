@@ -1,6 +1,6 @@
 [project]
 name = "algomodule"
-version = "1.0.4"
+version = "1.0.5"
 description = "CryptoCurrency Hashing Library"
 readme = "README.md"
 license = { text = "Proprietary"}
