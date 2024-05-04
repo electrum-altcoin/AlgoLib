@@ -68,11 +68,16 @@ PATH = "/usr/lib/ccache/bin:$PATH"
 [[tool.cibuildwheel.overrides]]
 before-all = [
     "bash -c 'choco install --no-progress --x86 openssl'",  # choco only allows EITHER 32 OR 64-bit version of a package
+    "bash -c 'refreshenv'",
 ]
 select = "*-win32"
 
 [[tool.cibuildwheel.overrides]]
 before-all = [
     "bash -c 'choco install --no-progress openssl'",        # choco only allows EITHER 32 OR 64-bit version of a package
+    "bash -c 'refreshenv'",
 ]
 select = "*-win_amd64"
+
+[tool.cibuildwheel.windows.environment]
+PATH = 'c:\Program Files\OpenSSL;$PATH'
