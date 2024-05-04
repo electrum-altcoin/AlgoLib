@@ -78,4 +78,4 @@ before-all = [
 select = "*-win_amd64"
 
 [tool.cibuildwheel.windows.environment]
-PATH = 'C:\Program Files\OpenSSL;$PATH'
+PATH = 'C:\Program Files\OpenSSL\lib;$PATH'

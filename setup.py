@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 import os
+import sys
 from glob import glob
 from setuptools import setup, Extension
 
+is_win32 = sys.platform.startswith("win32")
 ROOT_DIR = os.path.dirname(__file__)
 if ROOT_DIR == '':
   ROOT_DIR = '.'
@@ -13,13 +15,16 @@ EXCLUDE_SOURCES = [
     os.path.join(ROOT_DIR, 'src', 'sha3', 'haval_helper.c'),
     os.path.join(ROOT_DIR, 'src', 'sha3', 'md_helper.c'),
 ]
+LIBRARIES = ['crypto']
+if is_win32:
+  LIBRARIES = ['libcrypto']
 
 extensions = [
 	Extension(
 		"algomodule",
 		include_dirs=INCLUDE_DIRS + ['/usr/local/include', '/usr/include'],
 		sources=list(filter(lambda x: x not in EXCLUDE_SOURCES, SOURCES)),
-                libraries=['crypto'],
+                libraries=LIBRARIES,
 	)
 ]
 
