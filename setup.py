@@ -6,7 +6,7 @@ from setuptools import setup, Extension
 ROOT_DIR = os.path.dirname(__file__)
 if ROOT_DIR == '':
   ROOT_DIR = '.'
-  
+
 SOURCES = [y for x in os.walk(ROOT_DIR) for y in glob(os.path.join(x[0], '*.c'))]
 INCLUDE_DIRS = [os.path.join(ROOT_DIR, o) for o in os.listdir(ROOT_DIR) if os.path.isdir(os.path.join(ROOT_DIR, o))]
 EXCLUDE_SOURCES = [
@@ -25,7 +25,7 @@ extensions = [
 
 setup(
     name = "algomodule",
-    version = "1.0.5",
+    version = "1.1.0",
     url = "https://github.com/electrum-altcoin/algomodule",
     author = "Ahmed Bodiwala",
     author_email = "ahmedbodi@crypto-expert.com",

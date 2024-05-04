@@ -1,6 +1,6 @@
 [project]
 name = "algomodule"
-version = "1.0.5"
+version = "1.1.0"
 description = "CryptoCurrency Hashing Library"
 readme = "README.md"
 license = { text = "Proprietary"}
@@ -68,16 +68,14 @@ PATH = "/usr/lib/ccache/bin:$PATH"
 [[tool.cibuildwheel.overrides]]
 before-all = [
     "bash -c 'choco install --no-progress --x86 openssl'",  # choco only allows EITHER 32 OR 64-bit version of a package
-    "bash -c 'refreshenv'",
 ]
 select = "*-win32"
 
 [[tool.cibuildwheel.overrides]]
 before-all = [
     "bash -c 'choco install --no-progress openssl'",        # choco only allows EITHER 32 OR 64-bit version of a package
-    "bash -c 'refreshenv'",
 ]
 select = "*-win_amd64"
 
 [tool.cibuildwheel.windows.environment]
-PATH = 'c:\Program Files\OpenSSL;$PATH'
+PATH = 'C:\Program Files\OpenSSL;$PATH'
