@@ -64,6 +64,10 @@ jobs:
     - uses: pypa/cibuildwheel@v2.2.2
       if: steps.cache-wheel.outputs.cache-hit != 'true'
 
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
+
     - uses: actions/upload-artifact@v2
       with:
         path: wheelhouse/*.whl
