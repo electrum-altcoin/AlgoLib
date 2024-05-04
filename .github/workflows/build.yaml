@@ -56,6 +56,11 @@ jobs:
     - uses: docker/setup-qemu-action@v1
       if: steps.cache-wheel.outputs.cache-hit != 'true' && runner.os == 'Linux'
 
+    - name: Install OpenSSL
+      if: ${{ matrix.os == 'windows-2022' }}
+      run: |
+        choco install openssl
+
     - uses: pypa/cibuildwheel@v2.2.2
       if: steps.cache-wheel.outputs.cache-hit != 'true'
 
