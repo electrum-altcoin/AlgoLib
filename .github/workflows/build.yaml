@@ -28,7 +28,6 @@ jobs:
             {"os": "ubuntu-22.04", "CIBW_BUILD": "cp311-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
             {"os": "ubuntu-22.04", "CIBW_BUILD": "cp312-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
             {"os": "macos-13",     "CIBW_BUILD": "cp*", "CIBW_ARCHS": "x86_64"},
-            {"os": "macos-14",     "CIBW_BUILD": "cp*", "CIBW_ARCHS": "x86_64"},
             {"os": "windows-2022", "CIBW_BUILD": "cp36-win_amd64", "CIBW_ARCHS": "AMD64"},
             {"os": "windows-2022", "CIBW_BUILD": "cp37-win_amd64", "CIBW_ARCHS": "AMD64"},
             {"os": "windows-2022", "CIBW_BUILD": "cp38-win_amd64", "CIBW_ARCHS": "AMD64"},
