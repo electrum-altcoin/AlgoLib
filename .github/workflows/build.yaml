@@ -13,10 +13,29 @@ jobs:
       MATRIX_WORKFLOW_DISPATCH: |
         {
           "include": [
-            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp*-manylinux_*", "CIBW_ARCHS": "x86_64"},
-            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp*-musllinux_*", "CIBW_ARCHS": "x86_64"},
-            {"os": "macos-13", "CIBW_BUILD": "cp*", "CIBW_ARCHS": "x86_64"},
-            {"os": "windows-2022", "CIBW_BUILD": "cp36-win_amd64, cp37-win_amd64, cp38-win_amd64, cp39-win_amd64, cp310-win_amd64, cp311-win_amd64, cp312-win_amd64", "CIBW_ARCHS": "AMD64"}
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp36-manylinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp37-manylinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp38-manylinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp39-manylinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp310-manylinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp311-manylinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp312-manylinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp36-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp37-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp38-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp39-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp310-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp311-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "ubuntu-22.04", "CIBW_BUILD": "cp312-musllinux_x86_64", "CIBW_ARCHS": "x86_64"},
+            {"os": "macos-13",     "CIBW_BUILD": "cp*", "CIBW_ARCHS": "x86_64"},
+            {"os": "macos-14",     "CIBW_BUILD": "cp*", "CIBW_ARCHS": "x86_64"},
+            {"os": "windows-2022", "CIBW_BUILD": "cp36-win_amd64", "CIBW_ARCHS": "AMD64"},
+            {"os": "windows-2022", "CIBW_BUILD": "cp37-win_amd64", "CIBW_ARCHS": "AMD64"},
+            {"os": "windows-2022", "CIBW_BUILD": "cp38-win_amd64", "CIBW_ARCHS": "AMD64"},
+            {"os": "windows-2022", "CIBW_BUILD": "cp39-win_amd64", "CIBW_ARCHS": "AMD64"},
+            {"os": "windows-2022", "CIBW_BUILD": "cp310-win_amd64", "CIBW_ARCHS": "AMD64"},
+            {"os": "windows-2022", "CIBW_BUILD": "cp311-win_amd64", "CIBW_ARCHS": "AMD64"},
+            {"os": "windows-2022", "CIBW_BUILD": "cp312-win_amd64", "CIBW_ARCHS": "AMD64"},
           ]
         }
 
