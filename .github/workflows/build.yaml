@@ -79,7 +79,7 @@ jobs:
       run: |
         choco install openssl
 
-    - uses: pypa/cibuildwheel@v2.2.2
+    - uses: pypa/cibuildwheel@v2.17.0
       if: steps.cache-wheel.outputs.cache-hit != 'true'
 
     - name: Setup tmate session
