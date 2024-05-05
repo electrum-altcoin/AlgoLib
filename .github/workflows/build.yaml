@@ -35,13 +35,13 @@ jobs:
             {"os": "windows-2022", "CIBW_BUILD": "cp310-win_amd64", "CIBW_ARCHS": "AMD64"},
             {"os": "windows-2022", "CIBW_BUILD": "cp311-win_amd64", "CIBW_ARCHS": "AMD64"},
             {"os": "windows-2022", "CIBW_BUILD": "cp312-win_amd64", "CIBW_ARCHS": "AMD64"},
-            {"os": "windows-2022", "CIBW_BUILD": "cp36-win32", "CIBW_ARCHS": "x86"},
-            {"os": "windows-2022", "CIBW_BUILD": "cp37-win32", "CIBW_ARCHS": "x86"},
-            {"os": "windows-2022", "CIBW_BUILD": "cp38-win32", "CIBW_ARCHS": "x86"},
-            {"os": "windows-2022", "CIBW_BUILD": "cp39-win32", "CIBW_ARCHS": "x86"},
-            {"os": "windows-2022", "CIBW_BUILD": "cp310-win32", "CIBW_ARCHS": "x86"},
-            {"os": "windows-2022", "CIBW_BUILD": "cp311-win32", "CIBW_ARCHS": "x86"},
-            {"os": "windows-2022", "CIBW_BUILD": "cp312-win32", "CIBW_ARCHS": "x86"}
+            {"os": "windows-2019", "CIBW_BUILD": "cp36-win32", "CIBW_ARCHS": "x86"},
+            {"os": "windows-2019", "CIBW_BUILD": "cp37-win32", "CIBW_ARCHS": "x86"},
+            {"os": "windows-2019", "CIBW_BUILD": "cp38-win32", "CIBW_ARCHS": "x86"},
+            {"os": "windows-2019", "CIBW_BUILD": "cp39-win32", "CIBW_ARCHS": "x86"},
+            {"os": "windows-2019", "CIBW_BUILD": "cp310-win32", "CIBW_ARCHS": "x86"},
+            {"os": "windows-2019", "CIBW_BUILD": "cp311-win32", "CIBW_ARCHS": "x86"},
+            {"os": "windows-2019", "CIBW_BUILD": "cp312-win32", "CIBW_ARCHS": "x86"}
           ]
         }
 
@@ -84,6 +84,11 @@ jobs:
       if: ${{ matrix.os == 'windows-2022' }}
       run: |
         choco install openssl
+
+    - name: Install OpenSSL
+      if: ${{ matrix.os == 'windows-2019' }}
+      run: |
+        choco install --x86 openssl
 
     - uses: pypa/cibuildwheel@v2.17.0
       if: steps.cache-wheel.outputs.cache-hit != 'true'
