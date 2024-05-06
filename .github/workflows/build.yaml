@@ -102,7 +102,7 @@ jobs:
     - name: Install OpenSSL
       if: ${{ matrix.os == 'windows-2019' }}
       run: |
-        choco install --x86 openssl
+        choco install --forceX86 openssl
 
     - uses: pypa/cibuildwheel@v2.17.0
       if: steps.cache-wheel.outputs.cache-hit != 'true'
