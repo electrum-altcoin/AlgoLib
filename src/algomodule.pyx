@@ -74,6 +74,9 @@ cdef extern from "jh/jh.h":
 cdef extern from "x17/x17.h":
 	extern void x17_hash(const char* input, char* output);
 
+cdef extern from "x16rv2/x16rv2.h":
+	extern void x16rv2_hash(const char* input, char* output);
+
 def _ltc_scrypt(hash):
 	cdef char output[32];	
 	scrypt_1024_1_1_256(hash, output);
@@ -216,4 +219,9 @@ def _jackpot_hash(hash):
 def _x17_hash(hash):
 	cdef char output[32]
 	x17_hash(hash, output);
+	return output[:32]
+
+def _x16rv2_hash(hash):
+	cdef char output[32]
+	x16rv2_hash(hash, output);
 	return output[:32]
