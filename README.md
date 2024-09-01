@@ -35,15 +35,15 @@ Ahmed Bodiwala
 All hashing algorithms welcome either by requests or PR's
 
 ## Help fund development
-DGB: DQVEK4NVRMeLafP3whnUX7vM2ieedhu6T
-LTC: LN128KQcBq545EEjmyWGCGDrQQkuAt4b6W    
-DOGE: DFAytXbSZ6HsMi1prKR1QRvC9rgS83zPqJ    
-BTC: 19Ckhmd7gKLXgwZfqgErkPgipzmuxVd3c9    
-BCH: qz0t72sr7mvewxc7t78chysaz0sj4drj2qjhl5xef6    
-NMC: NBUmzUR6Wz7B9FoHojjNkxv6iW7vpurbau   
-USDT(BEP-20): 0xce304642773c80793a46b9b13256e919f9653e12
-ETH: 0xf1fd985F91a1E84B9285f446057BA9DDf92176c3
-HMS: HHFXHfh6LaSYJchBzSCi1o1xD4EkhqrpyG
-CAT: 9bTygmcJFJrNNTViV2RJSvPW2tdF99jCw1
-FBX: fcC24C9mjz3SLqxdQe86gU2ism9gatT1gT
-TLS: TweUAsEwfZTGyo4GA8tdEbC2pvxVqCYCX5
+- DGB: DQVEK4NVRMeLafP3whnUX7vM2ieedhu6T
+- LTC: LN128KQcBq545EEjmyWGCGDrQQkuAt4b6W    
+- DOGE: DFAytXbSZ6HsMi1prKR1QRvC9rgS83zPqJ    
+- BTC: 19Ckhmd7gKLXgwZfqgErkPgipzmuxVd3c9    
+- BCH: qz0t72sr7mvewxc7t78chysaz0sj4drj2qjhl5xef6    
+- NMC: NBUmzUR6Wz7B9FoHojjNkxv6iW7vpurbau   
+- USDT(BEP-20): 0xce304642773c80793a46b9b13256e919f9653e12
+- ETH: 0xf1fd985F91a1E84B9285f446057BA9DDf92176c3
+- HMS: HHFXHfh6LaSYJchBzSCi1o1xD4EkhqrpyG
+- CAT: 9bTygmcJFJrNNTViV2RJSvPW2tdF99jCw1
+- FBX: fcC24C9mjz3SLqxdQe86gU2ism9gatT1gT
+- TLS: TweUAsEwfZTGyo4GA8tdEbC2pvxVqCYCX5
