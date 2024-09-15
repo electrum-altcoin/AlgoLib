@@ -102,7 +102,7 @@ jobs:
       if: ${{ failure() }}
       uses: mxschmitt/action-tmate@v3
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         path: wheelhouse/*.whl
         name: wheels
