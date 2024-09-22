@@ -25,14 +25,14 @@ namespace
 /// @param nonce        The 64-bit nonce.
 /// @param mix_hash     Additional 256-bits of data.
 /// @return             The 256-bit output of the hash function.
-void keccak_progpow_256(uint32_t* st) noexcept
+void keccak_progpow_256(uint32_t* st) 
 {
     meraki_keccakf800(st);
 }
 
 /// The same as keccak_progpow_256() but uses null mix
 /// and returns top 64 bits of the output being a big-endian prefix of the 256-bit hash.
-    inline void keccak_progpow_64(uint32_t* st) noexcept
+    inline void keccak_progpow_64(uint32_t* st) 
 {
     keccak_progpow_256(st);
 }
@@ -46,10 +46,10 @@ void keccak_progpow_256(uint32_t* st) noexcept
 class mix_rng_state
 {
 public:
-    inline explicit mix_rng_state(uint32_t* seed) noexcept;
+    inline explicit mix_rng_state(uint32_t* seed) ;
 
-    uint32_t next_dst() noexcept { return dst_seq[(dst_counter++) % num_regs]; }
-    uint32_t next_src() noexcept { return src_seq[(src_counter++) % num_regs]; }
+    uint32_t next_dst()  { return dst_seq[(dst_counter++) % num_regs]; }
+    uint32_t next_src()  { return src_seq[(src_counter++) % num_regs]; }
 
     kiss99 rng;
 
@@ -60,7 +60,7 @@ private:
     std::array<uint32_t, num_regs> src_seq;
 };
 
-mix_rng_state::mix_rng_state(uint32_t* hash_seed) noexcept
+mix_rng_state::mix_rng_state(uint32_t* hash_seed) 
 {
     const auto seed_lo = static_cast<uint32_t>(hash_seed[0]);
     const auto seed_hi = static_cast<uint32_t>(hash_seed[1]);
@@ -89,7 +89,7 @@ mix_rng_state::mix_rng_state(uint32_t* hash_seed) noexcept
 
 
 NO_SANITIZE("unsigned-integer-overflow")
-inline uint32_t random_math(uint32_t a, uint32_t b, uint32_t selector) noexcept
+inline uint32_t random_math(uint32_t a, uint32_t b, uint32_t selector) 
 {
     switch (selector % 11)
     {
@@ -123,7 +123,7 @@ inline uint32_t random_math(uint32_t a, uint32_t b, uint32_t selector) noexcept
 /// Assuming `a` has high entropy, only do ops that retain entropy even if `b`
 /// has low entropy (i.e. do not do `a & b`).
 NO_SANITIZE("unsigned-integer-overflow")
-inline void random_merge(uint32_t& a, uint32_t b, uint32_t selector) noexcept
+inline void random_merge(uint32_t& a, uint32_t b, uint32_t selector) 
 {
     const auto x = (selector >> 16) % 31 + 1;  // Additional non-zero selector from higher bits.
     switch (selector % 4)
@@ -252,7 +252,7 @@ mix_array init_mix(uint32_t* hash_seed)
 }
 
 hash256 hash_mix(
-    const epoch_context& context, int block_number, uint32_t * seed, lookup_fn lookup) noexcept
+    const epoch_context& context, int block_number, uint32_t * seed, lookup_fn lookup) 
 {
     auto mix = init_mix(seed);
     auto number = uint64_t(block_number / period_length);
@@ -285,7 +285,7 @@ hash256 hash_mix(
 }  // namespace
 
 result hash(const epoch_context& context, int block_number, const hash256& header_hash,
-    uint64_t nonce) noexcept
+    uint64_t nonce) 
 {
     uint32_t hash_seed[2];  // KISS99 initiator
 
@@ -343,9 +343,9 @@ result hash(const epoch_context& context, int block_number, const hash256& heade
 }
 
 result hash(const epoch_context_full& context, int block_number, const hash256& header_hash,
-    uint64_t nonce) noexcept
+    uint64_t nonce) 
 {
-    static const auto lazy_lookup = [](const epoch_context& ctx, uint32_t index) noexcept
+    static const auto lazy_lookup = [](const epoch_context& ctx, uint32_t index) 
     {
         auto* full_dataset_1024 = static_cast<const epoch_context_full&>(ctx).full_dataset;
         auto* full_dataset_2048 = reinterpret_cast<hash2048*>(full_dataset_1024);
@@ -416,7 +416,7 @@ result hash(const epoch_context_full& context, int block_number, const hash256& 
 }
 
 bool verify(const epoch_context& context, int block_number, const hash256& header_hash,
-    const hash256& mix_hash, uint64_t nonce, const hash256& boundary) noexcept
+    const hash256& mix_hash, uint64_t nonce, const hash256& boundary) 
 {
     uint32_t hash_seed[2];  // KISS99 initiator
     uint32_t state2[8];
@@ -477,7 +477,7 @@ bool verify(const epoch_context& context, int block_number, const hash256& heade
 }
 
 //bool light_verify(const char* str_header_hash,
-//                  const char* str_mix_hash, const char* str_nonce, const char* str_boundary, char* str_final) noexcept
+//                  const char* str_mix_hash, const char* str_nonce, const char* str_boundary, char* str_final) 
 //{
 //
 //    hash256 header_hash = to_hash256(str_header_hash);
@@ -539,7 +539,7 @@ bool verify(const epoch_context& context, int block_number, const hash256& heade
 
 search_result search_light(const epoch_context& context, int block_number,
     const hash256& header_hash, const hash256& boundary, uint64_t start_nonce,
-    size_t iterations) noexcept
+    size_t iterations) 
 {
     const uint64_t end_nonce = start_nonce + iterations;
     for (uint64_t nonce = start_nonce; nonce < end_nonce; ++nonce)
@@ -553,7 +553,7 @@ search_result search_light(const epoch_context& context, int block_number,
 
 search_result search(const epoch_context_full& context, int block_number,
     const hash256& header_hash, const hash256& boundary, uint64_t start_nonce,
-    size_t iterations) noexcept
+    size_t iterations) 
 {
     const uint64_t end_nonce = start_nonce + iterations;
     for (uint64_t nonce = start_nonce; nonce < end_nonce; ++nonce)

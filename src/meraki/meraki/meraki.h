@@ -11,12 +11,6 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-#define NOEXCEPT noexcept
-#else
-#define NOEXCEPT
-#endif
-
-#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -61,7 +55,7 @@ struct meraki_result
  * @param epoch_number  The epoch number.
  * @return              The number items in the light cache.
  */
-int meraki_calculate_light_cache_num_items(int epoch_number) NOEXCEPT;
+int meraki_calculate_light_cache_num_items(int epoch_number) ;
 
 
 /**
@@ -73,17 +67,17 @@ int meraki_calculate_light_cache_num_items(int epoch_number) NOEXCEPT;
  * @param epoch_number  The epoch number.
  * @return              The number items in the full dataset.
  */
-int meraki_calculate_full_dataset_num_items(int epoch_number) NOEXCEPT;
+int meraki_calculate_full_dataset_num_items(int epoch_number) ;
 
 /**
  * Calculates the epoch seed hash.
  * @param epoch_number  The epoch number.
  * @return              The epoch seed hash.
  */
-union meraki_hash256 meraki_calculate_epoch_seed(int epoch_number) NOEXCEPT;
+union meraki_hash256 meraki_calculate_epoch_seed(int epoch_number) ;
 
 
-struct meraki_epoch_context* meraki_create_epoch_context(int epoch_number) NOEXCEPT;
+struct meraki_epoch_context* meraki_create_epoch_context(int epoch_number) ;
 
 /**
  * Creates the epoch context with the full dataset initialized.
@@ -96,38 +90,38 @@ struct meraki_epoch_context* meraki_create_epoch_context(int epoch_number) NOEXC
  * @param epoch_number  The epoch number.
  * @return  Pointer to the context or null in case of memory allocation failure.
  */
-struct meraki_epoch_context_full* meraki_create_epoch_context_full(int epoch_number) NOEXCEPT;
+struct meraki_epoch_context_full* meraki_create_epoch_context_full(int epoch_number) ;
 
-void meraki_destroy_epoch_context(struct meraki_epoch_context* context) NOEXCEPT;
+void meraki_destroy_epoch_context(struct meraki_epoch_context* context) ;
 
-void meraki_destroy_epoch_context_full(struct meraki_epoch_context_full* context) NOEXCEPT;
+void meraki_destroy_epoch_context_full(struct meraki_epoch_context_full* context) ;
 
 
 /**
  * Get global shared epoch context.
  */
-const struct meraki_epoch_context* meraki_get_global_epoch_context(int epoch_number) NOEXCEPT;
+const struct meraki_epoch_context* meraki_get_global_epoch_context(int epoch_number) ;
 
 /**
  * Get global shared epoch context with full dataset initialized.
  */
 const struct meraki_epoch_context_full* meraki_get_global_epoch_context_full(
-    int epoch_number) NOEXCEPT;
+    int epoch_number) ;
 
 
 struct meraki_result meraki_hash(const struct meraki_epoch_context* context,
-    const union meraki_hash256* header_hash, uint64_t nonce) NOEXCEPT;
+    const union meraki_hash256* header_hash, uint64_t nonce) ;
 
 bool meraki_verify(const struct meraki_epoch_context* context,
     const union meraki_hash256* header_hash, const union meraki_hash256* mix_hash, uint64_t nonce,
-    const union meraki_hash256* boundary) NOEXCEPT;
+    const union meraki_hash256* boundary) ;
 
 bool meraki_verify_final_hash(const union meraki_hash256* header_hash,
     const union meraki_hash256* mix_hash, uint64_t nonce,
-    const union meraki_hash256* boundary) NOEXCEPT;
+    const union meraki_hash256* boundary) ;
 
 union meraki_hash256 light_verify(const union meraki_hash256* header_hash,
-                       const union meraki_hash256* mix_hash, uint64_t nonce) NOEXCEPT;
+                       const union meraki_hash256* mix_hash, uint64_t nonce) ;
 
 #ifdef __cplusplus
 }

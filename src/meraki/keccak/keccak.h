@@ -10,12 +10,6 @@
 #include <stddef.h>
 
 #ifdef __cplusplus
-#define NOEXCEPT noexcept
-#else
-#define NOEXCEPT
-#endif
-
-#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -27,7 +21,7 @@ extern "C" {
  *
  * @param state  The state of 25 64-bit words on which the permutation is to be performed.
  */
-void meraki_keccakf1600(uint64_t state[25]) NOEXCEPT;
+void meraki_keccakf1600(uint64_t state[25]) ;
 
 /**
  * The Keccak-f[800] function.
@@ -37,12 +31,12 @@ void meraki_keccakf1600(uint64_t state[25]) NOEXCEPT;
  *
  * @param state  The state of 25 32-bit words on which the permutation is to be performed.
  */
-void meraki_keccakf800(uint32_t state[25]) NOEXCEPT;
+void meraki_keccakf800(uint32_t state[25]) ;
 
-union meraki_hash256 meraki_keccak256(const uint8_t* data, size_t size) NOEXCEPT;
-union meraki_hash256 meraki_keccak256_32(const uint8_t data[32]) NOEXCEPT;
-union meraki_hash512 meraki_keccak512(const uint8_t* data, size_t size) NOEXCEPT;
-union meraki_hash512 meraki_keccak512_64(const uint8_t data[64]) NOEXCEPT;
+union meraki_hash256 meraki_keccak256(const uint8_t* data, size_t size) ;
+union meraki_hash256 meraki_keccak256_32(const uint8_t data[32]) ;
+union meraki_hash512 meraki_keccak512(const uint8_t* data, size_t size) ;
+union meraki_hash512 meraki_keccak512_64(const uint8_t data[64]) ;
 
 #ifdef __cplusplus
 }

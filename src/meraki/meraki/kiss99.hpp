@@ -37,16 +37,16 @@ class kiss99
 
 public:
     /** Creates KISS generator state with default values provided by the specification. */
-    kiss99() noexcept = default;
+    kiss99()  = default;
 
     /** Creates KISS generator state with provided init values.*/
-    kiss99(uint32_t _z, uint32_t _w, uint32_t _jsr, uint32_t _jcong) noexcept
+    kiss99(uint32_t _z, uint32_t _w, uint32_t _jsr, uint32_t _jcong) 
       : z{_z}, w{_w}, jsr{_jsr}, jcong{_jcong}
     {}
 
     /** Generates next number from the KISS generator. */
     NO_SANITIZE("unsigned-integer-overflow")
-    uint32_t operator()() noexcept
+    uint32_t operator()() 
     {
         z = 36969 * (z & 0xffff) + (z >> 16);
         w = 18000 * (w & 0xffff) + (w >> 16);
