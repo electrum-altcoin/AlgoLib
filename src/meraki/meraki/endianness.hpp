@@ -50,9 +50,9 @@ struct le
     static uint32_t uint32(uint32_t x) NOEXCEPT { return x; }
     static uint64_t uint64(uint64_t x) NOEXCEPT { return x; }
 
-    static const meraki_hash1024& uint32s(const meraki_hash1024& h) NOEXCEPT { return h; }
-    static const meraki_hash512& uint32s(const meraki_hash512& h) NOEXCEPT { return h; }
-    static const meraki_hash256& uint32s(const meraki_hash256& h) NOEXCEPT { return h; }
+    static const hash1024& uint32s(const hash1024& h) NOEXCEPT { return h; }
+    static const hash512& uint32s(const hash512& h) NOEXCEPT { return h; }
+    static const hash256& uint32s(const hash256& h) NOEXCEPT { return h; }
 };
 
 struct be

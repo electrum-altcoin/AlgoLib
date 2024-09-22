@@ -29,7 +29,7 @@ extern "C" struct meraki_epoch_context_full : meraki_epoch_context
 
 namespace meraki
 {
-inline bool is_less_or_equal(const meraki_hash256& a, const meraki_hash256& b) NOEXCEPT
+inline bool is_less_or_equal(const hash256& a, const hash256& b) NOEXCEPT
 {
     for (size_t i = 0; i < (sizeof(a) / sizeof(a.word64s[0])); ++i)
     {
@@ -41,24 +41,24 @@ inline bool is_less_or_equal(const meraki_hash256& a, const meraki_hash256& b) N
     return true;
 }
 
-inline bool is_equal(const meraki_hash256& a, const meraki_hash256& b) NOEXCEPT
+inline bool is_equal(const hash256& a, const hash256& b) NOEXCEPT
 {
     return std::memcmp(a.bytes, b.bytes, sizeof(a)) == 0;
 }
 
-void build_light_cache(meraki_hash512 cache[], int num_items, const meraki_hash256& seed) NOEXCEPT;
+void build_light_cache(hash512 cache[], int num_items, const hash256& seed) NOEXCEPT;
 
-meraki_hash512 calculate_dataset_item_512(const epoch_context& context, int64_t index) NOEXCEPT;
-meraki_hash1024 calculate_dataset_item_1024(const epoch_context& context, uint32_t index) NOEXCEPT;
-meraki_hash2048 calculate_dataset_item_2048(const epoch_context& context, uint32_t index) NOEXCEPT;
+hash512 calculate_dataset_item_512(const epoch_context& context, int64_t index) NOEXCEPT;
+hash1024 calculate_dataset_item_1024(const epoch_context& context, uint32_t index) NOEXCEPT;
+hash2048 calculate_dataset_item_2048(const epoch_context& context, uint32_t index) NOEXCEPT;
 
 namespace generic
 {
-using hash_fn_512 = meraki_hash512 (*)(const uint8_t* data, size_t size);
-using build_light_cache_fn = void (*)(meraki_hash512 cache[], int num_items, const meraki_hash256& seed);
+using hash_fn_512 = hash512 (*)(const uint8_t* data, size_t size);
+using build_light_cache_fn = void (*)(hash512 cache[], int num_items, const hash256& seed);
 
 void build_light_cache(
-    hash_fn_512 hash_fn, meraki_hash512 cache[], int num_items, const meraki_hash256& seed) NOEXCEPT;
+    hash_fn_512 hash_fn, hash512 cache[], int num_items, const hash256& seed) NOEXCEPT;
 
 epoch_context_full* create_epoch_context(
     build_light_cache_fn build_fn, int epoch_number, bool full) NOEXCEPT;

@@ -10,7 +10,6 @@
 #include "meraki/meraki/kiss99.hpp"
 #include "meraki/keccak/keccak.hpp"
 
-#include <cstddef>
 #include <array>
 
 namespace progpow
@@ -162,7 +161,7 @@ static const uint32_t ravencoin_kawpow[15] = {
         0x00000057, //W
 };
 
-using lookup_fn = meraki_hash2048 (*)(const epoch_context&, uint32_t);
+using lookup_fn = hash2048 (*)(const epoch_context&, uint32_t);
 
 using mix_array = std::array<std::array<uint32_t, num_regs>, num_lanes>;
 
@@ -171,7 +170,7 @@ void round(
 {
     const uint32_t num_items = static_cast<uint32_t>(context.full_dataset_num_items / 2);
     const uint32_t item_index = mix[r % num_lanes][0] % num_items;
-    const meraki_hash2048 item = lookup(context, item_index);
+    const hash2048 item = lookup(context, item_index);
 
     constexpr size_t num_words_per_lane = sizeof(item) / (sizeof(uint32_t) * num_lanes);
     constexpr int max_operations =
@@ -252,7 +251,7 @@ mix_array init_mix(uint32_t* hash_seed)
     return mix;
 }
 
-meraki_hash256 hash_mix(
+hash256 hash_mix(
     const epoch_context& context, int block_number, uint32_t * seed, lookup_fn lookup) NOEXCEPT
 {
     auto mix = init_mix(seed);
@@ -275,8 +274,8 @@ meraki_hash256 hash_mix(
     }
 
     // Reduce all lanes to a single 256-bit result.
-    static constexpr size_t num_words = sizeof(meraki_hash256) / sizeof(uint32_t);
-    meraki_hash256 mix_hash;
+    static constexpr size_t num_words = sizeof(hash256) / sizeof(uint32_t);
+    hash256 mix_hash;
     for (uint32_t& w : mix_hash.word32s)
         w = fnv_offset_basis;
     for (size_t l = 0; l < num_lanes; ++l)
@@ -285,7 +284,7 @@ meraki_hash256 hash_mix(
 }
 }  // namespace
 
-result hash(const epoch_context& context, int block_number, const meraki_hash256& header_hash,
+result hash(const epoch_context& context, int block_number, const hash256& header_hash,
     uint64_t nonce) NOEXCEPT
 {
     uint32_t hash_seed[2];  // KISS99 initiator
@@ -316,7 +315,7 @@ result hash(const epoch_context& context, int block_number, const meraki_hash256
 
     hash_seed[0] = state2[0];
     hash_seed[1] = state2[1];
-    const meraki_hash256 mix_hash = hash_mix(context, block_number, hash_seed, calculate_dataset_item_2048);
+    const hash256 mix_hash = hash_mix(context, block_number, hash_seed, calculate_dataset_item_2048);
 
     uint32_t state[25] = {0x0};     // Keccak's state
 
@@ -336,21 +335,21 @@ result hash(const epoch_context& context, int block_number, const meraki_hash256
     // Run keccak loop
     keccak_progpow_256(state);
 
-    meraki_hash256 output;
+    hash256 output;
     for (int i = 0; i < 8; ++i)
         output.word32s[i] = le::uint32(state[i]);
 
     return {output, mix_hash};
 }
 
-result hash(const epoch_context_full& context, int block_number, const meraki_hash256& header_hash,
+result hash(const epoch_context_full& context, int block_number, const hash256& header_hash,
     uint64_t nonce) NOEXCEPT
 {
     static const auto lazy_lookup = [](const epoch_context& ctx, uint32_t index) NOEXCEPT
     {
         auto* full_dataset_1024 = static_cast<const epoch_context_full&>(ctx).full_dataset;
-        auto* full_dataset_2048 = reinterpret_cast<meraki_hash2048*>(full_dataset_1024);
-        meraki_hash2048& item = full_dataset_2048[index];
+        auto* full_dataset_2048 = reinterpret_cast<hash2048*>(full_dataset_1024);
+        hash2048& item = full_dataset_2048[index];
         if (item.word64s[0] == 0)
         {
             // TODO: Copy elision here makes it thread-safe?
@@ -389,7 +388,7 @@ result hash(const epoch_context_full& context, int block_number, const meraki_ha
     hash_seed[0] = state2[0];
     hash_seed[1] = state2[1];
 
-    const meraki_hash256 mix_hash = hash_mix(context, block_number, hash_seed, lazy_lookup);
+    const hash256 mix_hash = hash_mix(context, block_number, hash_seed, lazy_lookup);
 
     uint32_t state[25] = {0x0};     // Keccak's state
 
@@ -409,15 +408,15 @@ result hash(const epoch_context_full& context, int block_number, const meraki_ha
     // Run keccak loop
     keccak_progpow_256(state);
 
-    meraki_hash256 output;
+    hash256 output;
     for (int i = 0; i < 8; ++i)
         output.word32s[i] = le::uint32(state[i]);
 
     return {output, mix_hash};
 }
 
-bool verify(const epoch_context& context, int block_number, const meraki_hash256& header_hash,
-    const meraki_hash256& mix_hash, uint64_t nonce, const meraki_hash256& boundary) NOEXCEPT
+bool verify(const epoch_context& context, int block_number, const hash256& header_hash,
+    const hash256& mix_hash, uint64_t nonce, const hash256& boundary) NOEXCEPT
 {
     uint32_t hash_seed[2];  // KISS99 initiator
     uint32_t state2[8];
@@ -465,13 +464,13 @@ bool verify(const epoch_context& context, int block_number, const meraki_hash256
     // Run keccak loop
     keccak_progpow_256(state);
 
-    meraki_hash256 output;
+    hash256 output;
     for (int i = 0; i < 8; ++i)
         output.word32s[i] = le::uint32(state[i]);
     if (!is_less_or_equal(output, boundary))
         return false;
 
-    const meraki_hash256 expected_mix_hash =
+    const hash256 expected_mix_hash =
         hash_mix(context, block_number, hash_seed, calculate_dataset_item_2048);
 
     return is_equal(expected_mix_hash, mix_hash);
@@ -539,7 +538,7 @@ bool verify(const epoch_context& context, int block_number, const meraki_hash256
 //}
 
 search_result search_light(const epoch_context& context, int block_number,
-    const meraki_hash256& header_hash, const meraki_hash256& boundary, uint64_t start_nonce,
+    const hash256& header_hash, const hash256& boundary, uint64_t start_nonce,
     size_t iterations) NOEXCEPT
 {
     const uint64_t end_nonce = start_nonce + iterations;
@@ -553,7 +552,7 @@ search_result search_light(const epoch_context& context, int block_number,
 }
 
 search_result search(const epoch_context_full& context, int block_number,
-    const meraki_hash256& header_hash, const meraki_hash256& boundary, uint64_t start_nonce,
+    const hash256& header_hash, const hash256& boundary, uint64_t start_nonce,
     size_t iterations) NOEXCEPT
 {
     const uint64_t end_nonce = start_nonce + iterations;
