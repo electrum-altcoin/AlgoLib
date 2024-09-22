@@ -39,7 +39,7 @@ using result = meraki_result;
 ///
 /// @param bytes  A pointer to array of at least 32 bytes.
 /// @return       The constructed hash.
-inline hash256 hash256_from_bytes(const uint8_t bytes[32]) NOEXCEPT
+inline hash256 hash256_from_bytes(const uint8_t bytes[32]) noexcept
 {
     hash256 h;
     std::memcpy(&h, bytes, sizeof(h));
@@ -53,15 +53,26 @@ struct search_result
     hash256 final_hash = {};
     hash256 mix_hash = {};
 
-    search_result() NOEXCEPT = default;
+    search_result() noexcept = default;
 
-    search_result(result res, uint64_t n) NOEXCEPT
+    search_result(result res, uint64_t n) noexcept
       : solution_found(true), nonce(n), final_hash(res.final_hash), mix_hash(res.mix_hash)
     {}
 };
 
+
+/// Alias for meraki_calculate_light_cache_num_items().
+static constexpr auto calculate_light_cache_num_items = meraki_calculate_light_cache_num_items;
+
+/// Alias for meraki_calculate_full_dataset_num_items().
+static constexpr auto calculate_full_dataset_num_items = meraki_calculate_full_dataset_num_items;
+
+/// Alias for meraki_calculate_epoch_seed().
+static constexpr auto calculate_epoch_seed = meraki_calculate_epoch_seed;
+
+
 /// Calculates the epoch number out of the block number.
-inline constexpr int get_epoch_number(int block_number) NOEXCEPT
+inline constexpr int get_epoch_number(int block_number) noexcept
 {
     return block_number / epoch_length;
 }
@@ -72,7 +83,7 @@ inline constexpr int get_epoch_number(int block_number) NOEXCEPT
  * @param num_items  The number of items in the light cache.
  * @return           The size of the light cache in bytes.
  */
-inline constexpr size_t get_light_cache_size(int num_items) NOEXCEPT
+inline constexpr size_t get_light_cache_size(int num_items) noexcept
 {
     return static_cast<size_t>(num_items) * light_cache_item_size;
 }
@@ -83,7 +94,7 @@ inline constexpr size_t get_light_cache_size(int num_items) NOEXCEPT
  * @param num_items  The number of items in the full dataset.
  * @return           The size of the full dataset in bytes.
  */
-inline constexpr uint64_t get_full_dataset_size(int num_items) NOEXCEPT
+inline constexpr uint64_t get_full_dataset_size(int num_items) noexcept
 {
     return static_cast<uint64_t>(num_items) * full_dataset_item_size;
 }
@@ -98,42 +109,42 @@ using epoch_context_full_ptr =
 ///
 /// This is a wrapper for meraki_create_epoch_number C function that returns
 /// the context as a smart pointer which handles the destruction of the context.
-inline epoch_context_ptr create_epoch_context(int epoch_number) NOEXCEPT
+inline epoch_context_ptr create_epoch_context(int epoch_number) noexcept
 {
     return {meraki_create_epoch_context(epoch_number), meraki_destroy_epoch_context};
 }
 
-inline epoch_context_full_ptr create_epoch_context_full(int epoch_number) NOEXCEPT
+inline epoch_context_full_ptr create_epoch_context_full(int epoch_number) noexcept
 {
     return {meraki_create_epoch_context_full(epoch_number), meraki_destroy_epoch_context_full};
 }
 
 
 inline result hash(
-    const epoch_context& context, const hash256& header_hash, uint64_t nonce) NOEXCEPT
+    const epoch_context& context, const hash256& header_hash, uint64_t nonce) noexcept
 {
     return meraki_hash(&context, &header_hash, nonce);
 }
 
-result hash(const epoch_context_full& context, const hash256& header_hash, uint64_t nonce) NOEXCEPT;
+result hash(const epoch_context_full& context, const hash256& header_hash, uint64_t nonce) noexcept;
 
 inline bool verify_final_hash(const hash256& header_hash, const hash256& mix_hash, uint64_t nonce,
-    const hash256& boundary) NOEXCEPT
+    const hash256& boundary) noexcept
 {
     return meraki_verify_final_hash(&header_hash, &mix_hash, nonce, &boundary);
 }
 
 inline bool verify(const epoch_context& context, const hash256& header_hash, const hash256& mix_hash,
-    uint64_t nonce, const hash256& boundary) NOEXCEPT
+    uint64_t nonce, const hash256& boundary) noexcept
 {
     return meraki_verify(&context, &header_hash, &mix_hash, nonce, &boundary);
 }
 
 search_result search_light(const epoch_context& context, const hash256& header_hash,
-    const hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT;
+    const hash256& boundary, uint64_t start_nonce, size_t iterations) noexcept;
 
 search_result search(const epoch_context_full& context, const hash256& header_hash,
-    const hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT;
+    const hash256& boundary, uint64_t start_nonce, size_t iterations) noexcept;
 
 
 /// Tries to find the epoch number matching the given seed hash.
@@ -144,17 +155,17 @@ search_result search(const epoch_context_full& context, const hash256& header_ha
 ///
 /// @param seed  Meraki seed hash.
 /// @return      The epoch number or -1 if not found.
-int find_epoch_number(const hash256& seed) NOEXCEPT;
+int find_epoch_number(const hash256& seed) noexcept;
 
 
 /// Get global shared epoch context.
-inline const epoch_context& get_global_epoch_context(int epoch_number) NOEXCEPT
+inline const epoch_context& get_global_epoch_context(int epoch_number) noexcept
 {
     return *meraki_get_global_epoch_context(epoch_number);
 }
 
 /// Get global shared epoch context with full dataset initialized.
-inline const epoch_context_full& get_global_epoch_context_full(int epoch_number) NOEXCEPT
+inline const epoch_context_full& get_global_epoch_context_full(int epoch_number) noexcept
 {
     return *meraki_get_global_epoch_context_full(epoch_number);
 }

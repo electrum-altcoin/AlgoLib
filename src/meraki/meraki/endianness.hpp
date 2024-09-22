@@ -47,17 +47,17 @@ namespace meraki
 
 struct le
 {
-    static uint32_t uint32(uint32_t x) NOEXCEPT { return x; }
-    static uint64_t uint64(uint64_t x) NOEXCEPT { return x; }
+    static uint32_t uint32(uint32_t x) noexcept { return x; }
+    static uint64_t uint64(uint64_t x) noexcept { return x; }
 
-    static const hash1024& uint32s(const hash1024& h) NOEXCEPT { return h; }
-    static const hash512& uint32s(const hash512& h) NOEXCEPT { return h; }
-    static const hash256& uint32s(const hash256& h) NOEXCEPT { return h; }
+    static const hash1024& uint32s(const hash1024& h) noexcept { return h; }
+    static const hash512& uint32s(const hash512& h) noexcept { return h; }
+    static const hash256& uint32s(const hash256& h) noexcept { return h; }
 };
 
 struct be
 {
-    static uint64_t uint64(uint64_t x) NOEXCEPT { return bswap64(x); }
+    static uint64_t uint64(uint64_t x) noexcept { return bswap64(x); }
 };
 
 
@@ -65,24 +65,24 @@ struct be
 
 struct le
 {
-    static uint32_t uint32(uint32_t x) NOEXCEPT { return bswap32(x); }
-    static uint64_t uint64(uint64_t x) NOEXCEPT { return bswap64(x); }
+    static uint32_t uint32(uint32_t x) noexcept { return bswap32(x); }
+    static uint64_t uint64(uint64_t x) noexcept { return bswap64(x); }
 
-    static hash1024 uint32s(hash1024 h) NOEXCEPT
+    static hash1024 uint32s(hash1024 h) noexcept
     {
         for (auto& w : h.word32s)
             w = uint32(w);
         return h;
     }
 
-    static hash512 uint32s(hash512 h) NOEXCEPT
+    static hash512 uint32s(hash512 h) noexcept
     {
         for (auto& w : h.word32s)
             w = uint32(w);
         return h;
     }
 
-    static hash256 uint32s(hash256 h) NOEXCEPT
+    static hash256 uint32s(hash256 h) noexcept
     {
         for (auto& w : h.word32s)
             w = uint32(w);
@@ -92,7 +92,7 @@ struct le
 
 struct be
 {
-    static uint64_t uint64(uint64_t x) NOEXCEPT { return x; }
+    static uint64_t uint64(uint64_t x) noexcept { return x; }
 };
 
 #endif

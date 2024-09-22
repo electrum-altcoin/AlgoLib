@@ -39,7 +39,7 @@ namespace
 {
 using ::fnv1;
 
-inline hash512 fnv1(const hash512& u, const hash512& v) NOEXCEPT
+inline hash512 fnv1(const hash512& u, const hash512& v) noexcept
 {
     hash512 r;
     for (size_t i = 0; i < sizeof(r) / sizeof(r.word32s[0]); ++i)
@@ -47,7 +47,7 @@ inline hash512 fnv1(const hash512& u, const hash512& v) NOEXCEPT
     return r;
 }
 
-inline hash512 bitwise_xor(const hash512& x, const hash512& y) NOEXCEPT
+inline hash512 bitwise_xor(const hash512& x, const hash512& y) noexcept
 {
     hash512 z;
     for (size_t i = 0; i < sizeof(z) / sizeof(z.word64s[0]); ++i)
@@ -56,7 +56,7 @@ inline hash512 bitwise_xor(const hash512& x, const hash512& y) NOEXCEPT
 }
 }  // namespace
 
-int find_epoch_number(const hash256& seed) NOEXCEPT
+int find_epoch_number(const hash256& seed) noexcept
 {
     static constexpr int num_tries = 30000;  // Divisible by 16.
 
@@ -101,7 +101,7 @@ int find_epoch_number(const hash256& seed) NOEXCEPT
 namespace generic
 {
 void build_light_cache(
-    hash_fn_512 hash_fn, hash512 cache[], int num_items, const hash256& seed) NOEXCEPT
+    hash_fn_512 hash_fn, hash512 cache[], int num_items, const hash256& seed) noexcept
 {
     hash512 item = hash_fn(seed.bytes, sizeof(seed));
     cache[0] = item;
@@ -131,13 +131,13 @@ void build_light_cache(
 }
 
 epoch_context_full* create_epoch_context(
-    build_light_cache_fn build_fn, int epoch_number, bool full) NOEXCEPT
+    build_light_cache_fn build_fn, int epoch_number, bool full) noexcept
 {
     static_assert(sizeof(epoch_context_full) < sizeof(hash512), "epoch_context too big");
     static constexpr size_t context_alloc_size = sizeof(hash512);
 
-    const int light_cache_num_items = meraki_calculate_light_cache_num_items(epoch_number);
-    const int full_dataset_num_items = meraki_calculate_full_dataset_num_items(epoch_number);
+    const int light_cache_num_items = calculate_light_cache_num_items(epoch_number);
+    const int full_dataset_num_items = calculate_full_dataset_num_items(epoch_number);
     const size_t light_cache_size = get_light_cache_size(light_cache_num_items);
     const size_t full_dataset_size =
         full ? static_cast<size_t>(full_dataset_num_items) * sizeof(hash1024) :
@@ -150,7 +150,7 @@ epoch_context_full* create_epoch_context(
         return nullptr;  // Signal out-of-memory by returning null pointer.
 
     hash512* const light_cache = reinterpret_cast<hash512*>(alloc_data + context_alloc_size);
-    const hash256 epoch_seed = meraki_calculate_epoch_seed(epoch_number);
+    const hash256 epoch_seed = calculate_epoch_seed(epoch_number);
     build_fn(light_cache, light_cache_num_items, epoch_seed);
 
     uint32_t* const l1_cache =
@@ -174,7 +174,7 @@ epoch_context_full* create_epoch_context(
 }
 }  // namespace generic
 
-void build_light_cache(hash512 cache[], int num_items, const hash256& seed) NOEXCEPT
+void build_light_cache(hash512 cache[], int num_items, const hash256& seed) noexcept
 {
     return generic::build_light_cache(keccak512, cache, num_items, seed);
 }
@@ -187,7 +187,7 @@ struct item_state
 
     hash512 mix;
 
-    ALWAYS_INLINE item_state(const epoch_context& context, int64_t index) NOEXCEPT
+    ALWAYS_INLINE item_state(const epoch_context& context, int64_t index) noexcept
       : cache{context.light_cache},
         num_cache_items{context.light_cache_num_items},
         seed{static_cast<uint32_t>(index)}
@@ -197,7 +197,7 @@ struct item_state
         mix = le::uint32s(keccak512(mix));
     }
 
-    ALWAYS_INLINE void update(uint32_t round) NOEXCEPT
+    ALWAYS_INLINE void update(uint32_t round) noexcept
     {
         static constexpr size_t num_words = sizeof(mix) / sizeof(uint32_t);
         const uint32_t t = fnv1(seed ^ round, mix.word32s[round % num_words]);
@@ -205,10 +205,10 @@ struct item_state
         mix = fnv1(mix, le::uint32s(cache[parent_index]));
     }
 
-    ALWAYS_INLINE hash512 final() NOEXCEPT { return keccak512(le::uint32s(mix)); }
+    ALWAYS_INLINE hash512 final() noexcept { return keccak512(le::uint32s(mix)); }
 };
 
-hash512 calculate_dataset_item_512(const epoch_context& context, int64_t index) NOEXCEPT
+hash512 calculate_dataset_item_512(const epoch_context& context, int64_t index) noexcept
 {
     item_state item0{context, index};
     for (uint32_t j = 0; j < full_dataset_item_parents; ++j)
@@ -220,7 +220,7 @@ hash512 calculate_dataset_item_512(const epoch_context& context, int64_t index) 
 ///
 /// This consist of two 512-bit items produced by calculate_dataset_item_partial().
 /// Here the computation is done interleaved for better performance.
-hash1024 calculate_dataset_item_1024(const epoch_context& context, uint32_t index) NOEXCEPT
+hash1024 calculate_dataset_item_1024(const epoch_context& context, uint32_t index) noexcept
 {
     item_state item0{context, int64_t(index) * 2};
     item_state item1{context, int64_t(index) * 2 + 1};
@@ -234,7 +234,7 @@ hash1024 calculate_dataset_item_1024(const epoch_context& context, uint32_t inde
     return hash1024{{item0.final(), item1.final()}};
 }
 
-hash2048 calculate_dataset_item_2048(const epoch_context& context, uint32_t index) NOEXCEPT
+hash2048 calculate_dataset_item_2048(const epoch_context& context, uint32_t index) noexcept
 {
     item_state item0{context, int64_t(index) * 4};
     item_state item1{context, int64_t(index) * 4 + 1};
@@ -256,7 +256,7 @@ namespace
 {
 using lookup_fn = hash1024 (*)(const epoch_context&, uint32_t);
 
-inline hash512 hash_seed(const hash256& header_hash, uint64_t nonce) NOEXCEPT
+inline hash512 hash_seed(const hash256& header_hash, uint64_t nonce) noexcept
 {
     nonce = le::uint64(nonce);
     uint8_t init_data[sizeof(header_hash) + sizeof(nonce)];
@@ -275,7 +275,7 @@ inline hash256 hash_final(const hash512& seed, const hash256& mix_hash)
 }
 
 inline hash256 hash_kernel(
-    const epoch_context& context, const hash512& seed, lookup_fn lookup) NOEXCEPT
+    const epoch_context& context, const hash512& seed, lookup_fn lookup) noexcept
 {
     static constexpr size_t num_words = sizeof(hash1024) / sizeof(uint32_t);
     const uint32_t index_limit = static_cast<uint32_t>(context.full_dataset_num_items);
@@ -305,9 +305,9 @@ inline hash256 hash_kernel(
 }
 }  // namespace
 
-result hash(const epoch_context_full& context, const hash256& header_hash, uint64_t nonce) NOEXCEPT
+result hash(const epoch_context_full& context, const hash256& header_hash, uint64_t nonce) noexcept
 {
-    static const auto lazy_lookup = [](const epoch_context& ctx, uint32_t index) NOEXCEPT
+    static const auto lazy_lookup = [](const epoch_context& ctx, uint32_t index) noexcept
     {
         auto full_dataset = static_cast<const epoch_context_full&>(ctx).full_dataset;
         hash1024& item = full_dataset[index];
@@ -326,7 +326,7 @@ result hash(const epoch_context_full& context, const hash256& header_hash, uint6
 }
 
 search_result search_light(const epoch_context& context, const hash256& header_hash,
-    const hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT
+    const hash256& boundary, uint64_t start_nonce, size_t iterations) noexcept
 {
     const uint64_t end_nonce = start_nonce + iterations;
     for (uint64_t nonce = start_nonce; nonce < end_nonce; ++nonce)
@@ -339,7 +339,7 @@ search_result search_light(const epoch_context& context, const hash256& header_h
 }
 
 search_result search(const epoch_context_full& context, const hash256& header_hash,
-    const hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT
+    const hash256& boundary, uint64_t start_nonce, size_t iterations) noexcept
 {
     const uint64_t end_nonce = start_nonce + iterations;
     for (uint64_t nonce = start_nonce; nonce < end_nonce; ++nonce)
@@ -356,7 +356,7 @@ using namespace meraki;
 
 extern "C" {
 
-meraki_hash256 meraki_calculate_epoch_seed(int epoch_number) NOEXCEPT
+meraki_hash256 meraki_calculate_epoch_seed(int epoch_number) noexcept
 {
     meraki_hash256 epoch_seed = {};
     for (int i = 0; i < epoch_number; ++i)
@@ -364,7 +364,7 @@ meraki_hash256 meraki_calculate_epoch_seed(int epoch_number) NOEXCEPT
     return epoch_seed;
 }
 
-int meraki_calculate_light_cache_num_items(int epoch_number) NOEXCEPT
+int meraki_calculate_light_cache_num_items(int epoch_number) noexcept
 {
     static constexpr int item_size = sizeof(hash512);
     static constexpr int num_items_init = light_cache_init_size / item_size;
@@ -379,7 +379,7 @@ int meraki_calculate_light_cache_num_items(int epoch_number) NOEXCEPT
     return num_items;
 }
 
-int meraki_calculate_full_dataset_num_items(int epoch_number) NOEXCEPT
+int meraki_calculate_full_dataset_num_items(int epoch_number) noexcept
 {
     static constexpr int item_size = sizeof(hash1024);
     static constexpr int num_items_init = full_dataset_init_size / item_size;
@@ -394,29 +394,29 @@ int meraki_calculate_full_dataset_num_items(int epoch_number) NOEXCEPT
     return num_items;
 }
 
-epoch_context* meraki_create_epoch_context(int epoch_number) NOEXCEPT
+epoch_context* meraki_create_epoch_context(int epoch_number) noexcept
 {
     return generic::create_epoch_context(build_light_cache, epoch_number, false);
 }
 
-epoch_context_full* meraki_create_epoch_context_full(int epoch_number) NOEXCEPT
+epoch_context_full* meraki_create_epoch_context_full(int epoch_number) noexcept
 {
     return generic::create_epoch_context(build_light_cache, epoch_number, true);
 }
 
-void meraki_destroy_epoch_context_full(epoch_context_full* context) NOEXCEPT
+void meraki_destroy_epoch_context_full(epoch_context_full* context) noexcept
 {
     meraki_destroy_epoch_context(context);
 }
 
-void meraki_destroy_epoch_context(epoch_context* context) NOEXCEPT
+void meraki_destroy_epoch_context(epoch_context* context) noexcept
 {
     context->~epoch_context();
     std::free(context);
 }
 
 meraki_result meraki_hash(
-    const epoch_context* context, const hash256* header_hash, uint64_t nonce) NOEXCEPT
+    const epoch_context* context, const hash256* header_hash, uint64_t nonce) noexcept
 {
     const hash512 seed = hash_seed(*header_hash, nonce);
     const hash256 mix_hash = hash_kernel(*context, seed, calculate_dataset_item_1024);
@@ -424,14 +424,14 @@ meraki_result meraki_hash(
 }
 
 bool meraki_verify_final_hash(const hash256* header_hash, const hash256* mix_hash, uint64_t nonce,
-    const hash256* boundary) NOEXCEPT
+    const hash256* boundary) noexcept
 {
     const hash512 seed = hash_seed(*header_hash, nonce);
     return is_less_or_equal(hash_final(seed, *mix_hash), *boundary);
 }
 
 bool meraki_verify(const epoch_context* context, const hash256* header_hash,
-    const hash256* mix_hash, uint64_t nonce, const hash256* boundary) NOEXCEPT
+    const hash256* mix_hash, uint64_t nonce, const hash256* boundary) noexcept
 {
     const hash512 seed = hash_seed(*header_hash, nonce);
     if (!is_less_or_equal(hash_final(seed, *mix_hash), *boundary))
@@ -461,7 +461,7 @@ static const uint32_t meowcoin_meraki[15] = {
 
 
 hash256 light_verify(const hash256* header_hash,
-                       const hash256* mix_hash, uint64_t nonce) NOEXCEPT
+                       const hash256* mix_hash, uint64_t nonce) noexcept
 {
     uint32_t state2[8];
 
