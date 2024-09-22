@@ -12,7 +12,7 @@
 namespace meraki
 {
 /// The meraki library version.
-constexpr auto version = MERAKI_VERSION;
+const auto version = MERAKI_VERSION;
 
 }  // namespace meraki
 #endif

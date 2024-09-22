@@ -162,19 +162,19 @@ static const uint32_t ravencoin_kawpow[15] = {
         0x00000057, //W
 };
 
-using lookup_fn = meraki_hash2048 (*)(const epoch_context&, uint32_t);
+using lookup_fn = meraki_hash2048 (*)(const meraki_epoch_context&, uint32_t);
 
 using mix_array = std::array<std::array<uint32_t, num_regs>, num_lanes>;
 
 void round(
-    const epoch_context& context, uint32_t r, mix_array& mix, mix_rng_state state, lookup_fn lookup)
+    const meraki_epoch_context& context, uint32_t r, mix_array& mix, mix_rng_state state, lookup_fn lookup)
 {
     const uint32_t num_items = static_cast<uint32_t>(context.full_dataset_num_items / 2);
     const uint32_t item_index = mix[r % num_lanes][0] % num_items;
     const meraki_hash2048 item = lookup(context, item_index);
 
-    constexpr size_t num_words_per_lane = sizeof(item) / (sizeof(uint32_t) * num_lanes);
-    constexpr int max_operations =
+    const size_t num_words_per_lane = sizeof(item) / (sizeof(uint32_t) * num_lanes);
+    const int max_operations =
         num_cache_accesses > num_math_operations ? num_cache_accesses : num_math_operations;
 
     // Process lanes.
@@ -253,7 +253,7 @@ mix_array init_mix(uint32_t* hash_seed)
 }
 
 meraki_hash256 hash_mix(
-    const epoch_context& context, int block_number, uint32_t * seed, lookup_fn lookup) NOEXCEPT
+    const meraki_epoch_context& context, int block_number, uint32_t * seed, lookup_fn lookup) NOEXCEPT
 {
     auto mix = init_mix(seed);
     auto number = uint64_t(block_number / period_length);
@@ -275,7 +275,7 @@ meraki_hash256 hash_mix(
     }
 
     // Reduce all lanes to a single 256-bit result.
-    static constexpr size_t num_words = sizeof(meraki_hash256) / sizeof(uint32_t);
+    static const size_t num_words = sizeof(meraki_hash256) / sizeof(uint32_t);
     meraki_hash256 mix_hash;
     for (uint32_t& w : mix_hash.word32s)
         w = fnv_offset_basis;
@@ -285,7 +285,7 @@ meraki_hash256 hash_mix(
 }
 }  // namespace
 
-result hash(const epoch_context& context, int block_number, const meraki_hash256& header_hash,
+meraki_result hash(const meraki_epoch_context& context, int block_number, const meraki_hash256& header_hash,
     uint64_t nonce) NOEXCEPT
 {
     uint32_t hash_seed[2];  // KISS99 initiator
@@ -343,12 +343,12 @@ result hash(const epoch_context& context, int block_number, const meraki_hash256
     return {output, mix_hash};
 }
 
-result hash(const epoch_context_full& context, int block_number, const meraki_hash256& header_hash,
+meraki_result hash(const meraki_epoch_context_full& context, int block_number, const meraki_hash256& header_hash,
     uint64_t nonce) NOEXCEPT
 {
-    static const auto lazy_lookup = [](const epoch_context& ctx, uint32_t index) NOEXCEPT
+    static const auto lazy_lookup = [](const meraki_epoch_context& ctx, uint32_t index) NOEXCEPT
     {
-        auto* full_dataset_1024 = static_cast<const epoch_context_full&>(ctx).full_dataset;
+        auto* full_dataset_1024 = static_cast<const meraki_epoch_context_full&>(ctx).full_dataset;
         auto* full_dataset_2048 = reinterpret_cast<meraki_hash2048*>(full_dataset_1024);
         meraki_hash2048& item = full_dataset_2048[index];
         if (item.word64s[0] == 0)
@@ -416,7 +416,7 @@ result hash(const epoch_context_full& context, int block_number, const meraki_ha
     return {output, mix_hash};
 }
 
-bool verify(const epoch_context& context, int block_number, const meraki_hash256& header_hash,
+bool verify(const meraki_epoch_context& context, int block_number, const meraki_hash256& header_hash,
     const meraki_hash256& mix_hash, uint64_t nonce, const meraki_hash256& boundary) NOEXCEPT
 {
     uint32_t hash_seed[2];  // KISS99 initiator
@@ -538,28 +538,28 @@ bool verify(const epoch_context& context, int block_number, const meraki_hash256
 //    return true;
 //}
 
-search_result search_light(const epoch_context& context, int block_number,
+search_result search_light(const meraki_epoch_context& context, int block_number,
     const meraki_hash256& header_hash, const meraki_hash256& boundary, uint64_t start_nonce,
     size_t iterations) NOEXCEPT
 {
     const uint64_t end_nonce = start_nonce + iterations;
     for (uint64_t nonce = start_nonce; nonce < end_nonce; ++nonce)
     {
-        result r = hash(context, block_number, header_hash, nonce);
+        meraki_result r = hash(context, block_number, header_hash, nonce);
         if (is_less_or_equal(r.final_hash, boundary))
             return {r, nonce};
     }
     return {};
 }
 
-search_result search(const epoch_context_full& context, int block_number,
+search_result search(const meraki_epoch_context_full& context, int block_number,
     const meraki_hash256& header_hash, const meraki_hash256& boundary, uint64_t start_nonce,
     size_t iterations) NOEXCEPT
 {
     const uint64_t end_nonce = start_nonce + iterations;
     for (uint64_t nonce = start_nonce; nonce < end_nonce; ++nonce)
     {
-        result r = hash(context, block_number, header_hash, nonce);
+        meraki_result r = hash(context, block_number, header_hash, nonce);
         if (is_less_or_equal(r.final_hash, boundary))
             return {r, nonce};
     }
