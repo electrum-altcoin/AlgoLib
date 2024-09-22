@@ -8,8 +8,4 @@
 
 namespace meraki
 {
-using hash256 = meraki_hash256;
-using hash512 = meraki_hash512;
-using hash1024 = meraki_hash1024;
-using hash2048 = meraki_hash2048;
 }  // namespace meraki

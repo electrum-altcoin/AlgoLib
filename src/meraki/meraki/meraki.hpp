@@ -19,6 +19,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <cstddef>
 #include <memory>
 
 namespace meraki
@@ -39,9 +40,9 @@ using result = meraki_result;
 ///
 /// @param bytes  A pointer to array of at least 32 bytes.
 /// @return       The constructed hash.
-inline hash256 hash256_from_bytes(const uint8_t bytes[32]) NOEXCEPT
+inline meraki_hash256 hash256_from_bytes(const uint8_t bytes[32]) NOEXCEPT
 {
-    hash256 h;
+    meraki_hash256 h;
     std::memcpy(&h, bytes, sizeof(h));
     return h;
 }
@@ -50,8 +51,8 @@ struct search_result
 {
     bool solution_found = false;
     uint64_t nonce = 0;
-    hash256 final_hash = {};
-    hash256 mix_hash = {};
+    meraki_hash256 final_hash = {};
+    meraki_hash256 mix_hash = {};
 
     search_result() NOEXCEPT = default;
 
@@ -110,30 +111,30 @@ inline epoch_context_full_ptr create_epoch_context_full(int epoch_number) NOEXCE
 
 
 inline result hash(
-    const epoch_context& context, const hash256& header_hash, uint64_t nonce) NOEXCEPT
+    const epoch_context& context, const meraki_hash256& header_hash, uint64_t nonce) NOEXCEPT
 {
     return meraki_hash(&context, &header_hash, nonce);
 }
 
-result hash(const epoch_context_full& context, const hash256& header_hash, uint64_t nonce) NOEXCEPT;
+result hash(const epoch_context_full& context, const meraki_hash256& header_hash, uint64_t nonce) NOEXCEPT;
 
-inline bool verify_final_hash(const hash256& header_hash, const hash256& mix_hash, uint64_t nonce,
-    const hash256& boundary) NOEXCEPT
+inline bool verify_final_hash(const meraki_hash256& header_hash, const meraki_hash256& mix_hash, uint64_t nonce,
+    const meraki_hash256& boundary) NOEXCEPT
 {
     return meraki_verify_final_hash(&header_hash, &mix_hash, nonce, &boundary);
 }
 
-inline bool verify(const epoch_context& context, const hash256& header_hash, const hash256& mix_hash,
-    uint64_t nonce, const hash256& boundary) NOEXCEPT
+inline bool verify(const epoch_context& context, const meraki_hash256& header_hash, const meraki_hash256& mix_hash,
+    uint64_t nonce, const meraki_hash256& boundary) NOEXCEPT
 {
     return meraki_verify(&context, &header_hash, &mix_hash, nonce, &boundary);
 }
 
-search_result search_light(const epoch_context& context, const hash256& header_hash,
-    const hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT;
+search_result search_light(const epoch_context& context, const meraki_hash256& header_hash,
+    const meraki_hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT;
 
-search_result search(const epoch_context_full& context, const hash256& header_hash,
-    const hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT;
+search_result search(const epoch_context_full& context, const meraki_hash256& header_hash,
+    const meraki_hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT;
 
 
 /// Tries to find the epoch number matching the given seed hash.
@@ -144,7 +145,7 @@ search_result search(const epoch_context_full& context, const hash256& header_ha
 ///
 /// @param seed  Meraki seed hash.
 /// @return      The epoch number or -1 if not found.
-int find_epoch_number(const hash256& seed) NOEXCEPT;
+int find_epoch_number(const meraki_hash256& seed) NOEXCEPT;
 
 
 /// Get global shared epoch context.
