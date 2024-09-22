@@ -24,12 +24,12 @@ using namespace meraki;
 namespace
 {
 std::mutex shared_context_mutex;
-std::shared_ptr<meraki_epoch_context> shared_context;
-thread_local std::shared_ptr<meraki_epoch_context> thread_local_context;
+std::shared_ptr<epoch_context> shared_context;
+thread_local std::shared_ptr<epoch_context> thread_local_context;
 
 std::mutex shared_context_full_mutex;
-std::shared_ptr<meraki_epoch_context_full> shared_context_full;
-thread_local std::shared_ptr<meraki_epoch_context_full> thread_local_context_full;
+std::shared_ptr<epoch_context_full> shared_context_full;
+thread_local std::shared_ptr<epoch_context_full> thread_local_context_full;
 
 /// Update thread local epoch context.
 ///

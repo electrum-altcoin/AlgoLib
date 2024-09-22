@@ -19,7 +19,7 @@ extern "C" struct meraki_epoch_context_full : meraki_epoch_context
 {
     meraki_hash1024* full_dataset;
 
-    meraki_epoch_context_full(int epoch, int light_num_items,
+    constexpr meraki_epoch_context_full(int epoch, int light_num_items,
         const meraki_hash512* light, const uint32_t* l1, int dataset_num_items,
         meraki_hash1024* dataset) NOEXCEPT
       : meraki_epoch_context{epoch, light_num_items, light, l1, dataset_num_items},
@@ -48,9 +48,9 @@ inline bool is_equal(const meraki_hash256& a, const meraki_hash256& b) NOEXCEPT
 
 void build_light_cache(meraki_hash512 cache[], int num_items, const meraki_hash256& seed) NOEXCEPT;
 
-meraki_hash512 calculate_dataset_item_512(const meraki_epoch_context& context, int64_t index) NOEXCEPT;
-meraki_hash1024 calculate_dataset_item_1024(const meraki_epoch_context& context, uint32_t index) NOEXCEPT;
-meraki_hash2048 calculate_dataset_item_2048(const meraki_epoch_context& context, uint32_t index) NOEXCEPT;
+meraki_hash512 calculate_dataset_item_512(const epoch_context& context, int64_t index) NOEXCEPT;
+meraki_hash1024 calculate_dataset_item_1024(const epoch_context& context, uint32_t index) NOEXCEPT;
+meraki_hash2048 calculate_dataset_item_2048(const epoch_context& context, uint32_t index) NOEXCEPT;
 
 namespace generic
 {
@@ -60,7 +60,7 @@ using build_light_cache_fn = void (*)(meraki_hash512 cache[], int num_items, con
 void build_light_cache(
     hash_fn_512 hash_fn, meraki_hash512 cache[], int num_items, const meraki_hash256& seed) NOEXCEPT;
 
-meraki_epoch_context_full* create_epoch_context(
+epoch_context_full* create_epoch_context(
     build_light_cache_fn build_fn, int epoch_number, bool full) NOEXCEPT;
 
 }  // namespace generic

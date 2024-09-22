@@ -29,6 +29,10 @@ static const int light_cache_item_size = MERAKI_LIGHT_CACHE_ITEM_SIZE;
 static const int full_dataset_item_size = MERAKI_FULL_DATASET_ITEM_SIZE;
 static const int num_dataset_accesses = MERAKI_NUM_DATASET_ACCESSES;
 
+using epoch_context = meraki_epoch_context;
+using epoch_context_full = meraki_epoch_context_full;
+
+using result = meraki_result;
 
 /// Constructs a 256-bit hash from an array of bytes.
 ///
@@ -50,13 +54,13 @@ struct search_result
 
     search_result() NOEXCEPT = default;
 
-    search_result(meraki_result res, uint64_t n) NOEXCEPT
+    search_result(result res, uint64_t n) NOEXCEPT
       : solution_found(true), nonce(n), final_hash(res.final_hash), mix_hash(res.mix_hash)
     {}
 };
 
 /// Calculates the epoch number out of the block number.
-inline const int get_epoch_number(int block_number) NOEXCEPT
+inline constexpr int get_epoch_number(int block_number) NOEXCEPT
 {
     return block_number / epoch_length;
 }
@@ -67,7 +71,7 @@ inline const int get_epoch_number(int block_number) NOEXCEPT
  * @param num_items  The number of items in the light cache.
  * @return           The size of the light cache in bytes.
  */
-inline const size_t get_light_cache_size(int num_items) NOEXCEPT
+inline constexpr size_t get_light_cache_size(int num_items) NOEXCEPT
 {
     return static_cast<size_t>(num_items) * light_cache_item_size;
 }
@@ -78,16 +82,16 @@ inline const size_t get_light_cache_size(int num_items) NOEXCEPT
  * @param num_items  The number of items in the full dataset.
  * @return           The size of the full dataset in bytes.
  */
-inline const uint64_t get_full_dataset_size(int num_items) NOEXCEPT
+inline constexpr uint64_t get_full_dataset_size(int num_items) NOEXCEPT
 {
     return static_cast<uint64_t>(num_items) * full_dataset_item_size;
 }
 
 /// Owned unique pointer to an epoch context.
-using epoch_context_ptr = std::unique_ptr<meraki_epoch_context, decltype(&meraki_destroy_epoch_context)>;
+using epoch_context_ptr = std::unique_ptr<epoch_context, decltype(&meraki_destroy_epoch_context)>;
 
 using epoch_context_full_ptr =
-    std::unique_ptr<meraki_epoch_context_full, decltype(&meraki_destroy_epoch_context_full)>;
+    std::unique_ptr<epoch_context_full, decltype(&meraki_destroy_epoch_context_full)>;
 
 /// Creates Meraki epoch context.
 ///
@@ -104,13 +108,13 @@ inline epoch_context_full_ptr create_epoch_context_full(int epoch_number) NOEXCE
 }
 
 
-inline meraki_result hash(
-    const meraki_epoch_context& context, const meraki_hash256& header_hash, uint64_t nonce) NOEXCEPT
+inline result hash(
+    const epoch_context& context, const meraki_hash256& header_hash, uint64_t nonce) NOEXCEPT
 {
     return meraki_hash(&context, &header_hash, nonce);
 }
 
-meraki_result hash(const meraki_epoch_context_full& context, const meraki_hash256& header_hash, uint64_t nonce) NOEXCEPT;
+result hash(const epoch_context_full& context, const meraki_hash256& header_hash, uint64_t nonce) NOEXCEPT;
 
 inline bool verify_final_hash(const meraki_hash256& header_hash, const meraki_hash256& mix_hash, uint64_t nonce,
     const meraki_hash256& boundary) NOEXCEPT
@@ -118,16 +122,16 @@ inline bool verify_final_hash(const meraki_hash256& header_hash, const meraki_ha
     return meraki_verify_final_hash(&header_hash, &mix_hash, nonce, &boundary);
 }
 
-inline bool verify(const meraki_epoch_context& context, const meraki_hash256& header_hash, const meraki_hash256& mix_hash,
+inline bool verify(const epoch_context& context, const meraki_hash256& header_hash, const meraki_hash256& mix_hash,
     uint64_t nonce, const meraki_hash256& boundary) NOEXCEPT
 {
     return meraki_verify(&context, &header_hash, &mix_hash, nonce, &boundary);
 }
 
-search_result search_light(const meraki_epoch_context& context, const meraki_hash256& header_hash,
+search_result search_light(const epoch_context& context, const meraki_hash256& header_hash,
     const meraki_hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT;
 
-search_result search(const meraki_epoch_context_full& context, const meraki_hash256& header_hash,
+search_result search(const epoch_context_full& context, const meraki_hash256& header_hash,
     const meraki_hash256& boundary, uint64_t start_nonce, size_t iterations) NOEXCEPT;
 
 
@@ -143,13 +147,13 @@ int find_epoch_number(const meraki_hash256& seed) NOEXCEPT;
 
 
 /// Get global shared epoch context.
-inline const meraki_epoch_context& get_global_epoch_context(int epoch_number) NOEXCEPT
+inline const epoch_context& get_global_epoch_context(int epoch_number) NOEXCEPT
 {
     return *meraki_get_global_epoch_context(epoch_number);
 }
 
 /// Get global shared epoch context with full dataset initialized.
-inline const meraki_epoch_context_full& get_global_epoch_context_full(int epoch_number) NOEXCEPT
+inline const epoch_context_full& get_global_epoch_context_full(int epoch_number) NOEXCEPT
 {
     return *meraki_get_global_epoch_context_full(epoch_number);
 }
