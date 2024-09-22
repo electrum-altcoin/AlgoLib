@@ -10,21 +10,22 @@
 
 #include "meraki/meraki/meraki.hpp"
 
-/// The ProgPoW algorithm revision implemented as specified in the spec
-/// https://github.com/ifdefelse/ProgPOW#change-history.
-#define REVISION = "0.9.4"
-
 namespace progpow
 {
 using namespace meraki;  // Include meraki namespace.
 
-const int period_length = 3;
-const uint32_t num_regs = 32;
-const size_t num_lanes = 16;
-const int num_cache_accesses = 12;
-const int num_math_operations = 5;
-const size_t l1_cache_size = 16 * 1024;
-const size_t l1_cache_num_items = l1_cache_size / sizeof(uint32_t);
+
+/// The ProgPoW algorithm revision implemented as specified in the spec
+/// https://github.com/ifdefelse/ProgPOW#change-history.
+constexpr auto revision = "0.9.4";
+
+constexpr int period_length = 3;
+constexpr uint32_t num_regs = 32;
+constexpr size_t num_lanes = 16;
+constexpr int num_cache_accesses = 12;
+constexpr int num_math_operations = 5;
+constexpr size_t l1_cache_size = 16 * 1024;
+constexpr size_t l1_cache_num_items = l1_cache_size / sizeof(uint32_t);
 
 result hash(const epoch_context& context, int block_number, const meraki_hash256& header_hash,
     uint64_t nonce) NOEXCEPT;
