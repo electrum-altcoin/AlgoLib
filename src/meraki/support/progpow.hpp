@@ -28,23 +28,23 @@ constexpr size_t l1_cache_size = 16 * 1024;
 constexpr size_t l1_cache_num_items = l1_cache_size / sizeof(uint32_t);
 
 result hash(const epoch_context& context, int block_number, const hash256& header_hash,
-    uint64_t nonce) noexcept;
+    uint64_t nonce) NOEXCEPT;
 
 result hash(const epoch_context_full& context, int block_number, const hash256& header_hash,
-    uint64_t nonce) noexcept;
+    uint64_t nonce) NOEXCEPT;
 
 bool verify(const epoch_context& context, int block_number, const hash256& header_hash,
-    const hash256& mix_hash, uint64_t nonce, const hash256& boundary) noexcept;
+    const hash256& mix_hash, uint64_t nonce, const hash256& boundary) NOEXCEPT;
 
 //bool light_verify(const char* str_header_hash,
-//        const char* str_mix_hash, const char* str_nonce, const char* str_boundary, char* str_final) noexcept;
+//        const char* str_mix_hash, const char* str_nonce, const char* str_boundary, char* str_final) NOEXCEPT;
 
 search_result search_light(const epoch_context& context, int block_number,
     const hash256& header_hash, const hash256& boundary, uint64_t start_nonce,
-    size_t iterations) noexcept;
+    size_t iterations) NOEXCEPT;
 
 search_result search(const epoch_context_full& context, int block_number,
     const hash256& header_hash, const hash256& boundary, uint64_t start_nonce,
-    size_t iterations) noexcept;
+    size_t iterations) NOEXCEPT;
 
 }  // namespace progpow

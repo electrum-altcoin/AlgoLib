@@ -60,7 +60,7 @@ static const uint32_t fnv_offset_basis = 0x811c9dc5;
  * See https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash.
  */
 NO_SANITIZE("unsigned-integer-overflow")
-static inline uint32_t fnv1(uint32_t u, uint32_t v) noexcept
+static inline uint32_t fnv1(uint32_t u, uint32_t v) NOEXCEPT
 {
     return (u * fnv_prime) ^ v;
 }
@@ -71,7 +71,7 @@ static inline uint32_t fnv1(uint32_t u, uint32_t v) noexcept
  * See https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1a_hash.
  */
 NO_SANITIZE("unsigned-integer-overflow")
-static inline uint32_t fnv1a(uint32_t u, uint32_t v) noexcept
+static inline uint32_t fnv1a(uint32_t u, uint32_t v) NOEXCEPT
 {
     return (u ^ v) * fnv_prime;
 }

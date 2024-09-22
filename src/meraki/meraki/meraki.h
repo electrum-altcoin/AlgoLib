@@ -10,11 +10,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#ifdef __cplusplus
-#define NOEXCEPT noexcept
-#else
 #define NOEXCEPT
-#endif
 
 #ifdef __cplusplus
 extern "C" {
