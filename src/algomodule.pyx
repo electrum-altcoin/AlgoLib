@@ -1,3 +1,4 @@
+# distutils: language = c++
 from libc.stdint cimport uint32_t, int64_t, uint8_t, uint64_t
 from libc.stdlib cimport malloc, free
 from libc.string cimport memcpy
@@ -55,7 +56,7 @@ cdef extern from "x14/x14.h":
 	extern void x14_hash(const char* input, char* output, uint32_t input_len);
 
 cdef extern from "neoscrypt/neoscrypt.h":
-	extern void neoscrypt_hash(const char* input, char* output, uint32_t input_len);
+	extern void neoscrypt_hash(const unsigned char* input, unsigned char* output, uint32_t input_len);
 
 cdef extern from "dcrypt/dcrypt.h":
 	extern void dcrypt_hash(const char* input, char* output, uint32_t len);
@@ -241,7 +242,7 @@ def _x14_hash(hash):
 	return output[:32];
 
 def _neoscrypt_hash(hash):
-	cdef char output[32];
+	cdef unsigned char output[32];
 	cdef uint32_t input_len = len(hash);
 	neoscrypt_hash(hash, output, input_len);
 	return output[:32];

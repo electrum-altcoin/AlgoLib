@@ -34,6 +34,7 @@
         "include_dirs": [
             "src"
         ],
+        "language": "c++",
         "name": "algomodule",
         "sources": [
             "/home/ahmedbodi/work/it4f/AlgoLib/src/algomodule.pyx"
@@ -610,19 +611,35 @@ END: Cython Metadata */
 #endif
 #define __PYX_REINTERPRET_FUNCION(func_pointer, other_pointer) ((func_pointer)(void(*)(void))(other_pointer))
 
+#ifndef __cplusplus
+  #error "Cython files generated with the C++ option must be compiled with a C++ compiler."
+#endif
 #ifndef CYTHON_INLINE
   #if defined(__clang__)
     #define CYTHON_INLINE __inline__ __attribute__ ((__unused__))
-  #elif defined(__GNUC__)
-    #define CYTHON_INLINE __inline__
-  #elif defined(_MSC_VER)
-    #define CYTHON_INLINE __inline
-  #elif defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-    #define CYTHON_INLINE inline
   #else
-    #define CYTHON_INLINE
+    #define CYTHON_INLINE inline
   #endif
 #endif
+template<typename T>
+void __Pyx_call_destructor(T& x) {
+    x.~T();
+}
+template<typename T>
+class __Pyx_FakeReference {
+  public:
+    __Pyx_FakeReference() : ptr(NULL) { }
+    __Pyx_FakeReference(const T& ref) : ptr(const_cast<T*>(&ref)) { }
+    T *operator->() { return ptr; }
+    T *operator&() { return ptr; }
+    operator T&() { return *ptr; }
+    template<typename U> bool operator ==(const U& other) const { return *ptr == other; }
+    template<typename U> bool operator !=(const U& other) const { return *ptr != other; }
+    template<typename U> bool operator==(const __Pyx_FakeReference<U>& other) const { return *ptr == *other.ptr; }
+    template<typename U> bool operator!=(const __Pyx_FakeReference<U>& other) const { return *ptr != *other.ptr; }
+  private:
+    T *ptr;
+};
 
 #define __PYX_BUILD_PY_SSIZE_T "n"
 #define CYTHON_FORMAT_SSIZE_T "z"
@@ -1252,11 +1269,7 @@ static CYTHON_INLINE float __PYX_NAN() {
     #warning Please do not define the '__PYX_EXTERN_C' macro externally. Use 'CYTHON_EXTERN_C' instead.
     #endif
 #else
-  #ifdef __cplusplus
-    #define __PYX_EXTERN_C extern "C"
-  #else
-    #define __PYX_EXTERN_C extern
-  #endif
+    #define __PYX_EXTERN_C extern "C++"
 #endif
 
 #define __PYX_HAVE__algomodule
@@ -2722,6 +2735,9 @@ static CYTHON_INLINE void __Pyx_XCLEAR_MEMVIEW(__Pyx_memviewslice *, int, int);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE uint64_t __Pyx_PyInt_As_uint64_t(PyObject *);
+
+/* None.proto */
+#include <new>
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
@@ -17719,7 +17735,7 @@ static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *__
   return __pyx_r;
 }
 
-/* "algomodule.pyx":96
+/* "algomodule.pyx":97
  * 
  * # The Python wrapper function for light_verify
  * def _meraki_hash(bytes header_hash, bytes mix_hash, uint64_t nonce):             # <<<<<<<<<<<<<<
@@ -17786,7 +17802,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -17794,9 +17810,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("_meraki_hash", 1, 3, 3, 1); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_meraki_hash", 1, 3, 3, 1); __PYX_ERR(0, 97, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -17804,14 +17820,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("_meraki_hash", 1, 3, 3, 2); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_meraki_hash", 1, 3, 3, 2); __PYX_ERR(0, 97, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_meraki_hash") < 0)) __PYX_ERR(0, 96, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_meraki_hash") < 0)) __PYX_ERR(0, 97, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 3)) {
       goto __pyx_L5_argtuple_error;
@@ -17822,11 +17838,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     }
     __pyx_v_header_hash = ((PyObject*)values[0]);
     __pyx_v_mix_hash = ((PyObject*)values[1]);
-    __pyx_v_nonce = __Pyx_PyInt_As_uint64_t(values[2]); if (unlikely((__pyx_v_nonce == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L3_error)
+    __pyx_v_nonce = __Pyx_PyInt_As_uint64_t(values[2]); if (unlikely((__pyx_v_nonce == ((uint64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_meraki_hash", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 96, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_meraki_hash", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 97, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -17840,8 +17856,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_header_hash), (&PyBytes_Type), 1, "header_hash", 1))) __PYX_ERR(0, 96, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_mix_hash), (&PyBytes_Type), 1, "mix_hash", 1))) __PYX_ERR(0, 96, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_header_hash), (&PyBytes_Type), 1, "header_hash", 1))) __PYX_ERR(0, 97, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_mix_hash), (&PyBytes_Type), 1, "mix_hash", 1))) __PYX_ERR(0, 97, __pyx_L1_error)
   __pyx_r = __pyx_pf_10algomodule__meraki_hash(__pyx_self, __pyx_v_header_hash, __pyx_v_mix_hash, __pyx_v_nonce);
 
   /* function exit code */
@@ -17889,7 +17905,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_meraki_hash", 1);
 
-  /* "algomodule.pyx":98
+  /* "algomodule.pyx":99
  * def _meraki_hash(bytes header_hash, bytes mix_hash, uint64_t nonce):
  * 	# Ensure the inputs are of correct length
  * 	if len(header_hash) != 32 or len(mix_hash) != 32:             # <<<<<<<<<<<<<<
@@ -17898,9 +17914,9 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
  */
   if (unlikely(__pyx_v_header_hash == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 98, __pyx_L1_error)
+    __PYX_ERR(0, 99, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyBytes_GET_SIZE(__pyx_v_header_hash); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_GET_SIZE(__pyx_v_header_hash); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 99, __pyx_L1_error)
   __pyx_t_3 = (__pyx_t_2 != 32);
   if (!__pyx_t_3) {
   } else {
@@ -17909,28 +17925,28 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
   }
   if (unlikely(__pyx_v_mix_hash == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 98, __pyx_L1_error)
+    __PYX_ERR(0, 99, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyBytes_GET_SIZE(__pyx_v_mix_hash); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_GET_SIZE(__pyx_v_mix_hash); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 99, __pyx_L1_error)
   __pyx_t_3 = (__pyx_t_2 != 32);
   __pyx_t_1 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "algomodule.pyx":99
+    /* "algomodule.pyx":100
  * 	# Ensure the inputs are of correct length
  * 	if len(header_hash) != 32 or len(mix_hash) != 32:
  * 		raise ValueError("header_hash and mix_hash must be 32 bytes")             # <<<<<<<<<<<<<<
  * 
  * 	# Declare C variables and memoryviews at the start of the function
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 99, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 99, __pyx_L1_error)
+    __PYX_ERR(0, 100, __pyx_L1_error)
 
-    /* "algomodule.pyx":98
+    /* "algomodule.pyx":99
  * def _meraki_hash(bytes header_hash, bytes mix_hash, uint64_t nonce):
  * 	# Ensure the inputs are of correct length
  * 	if len(header_hash) != 32 or len(mix_hash) != 32:             # <<<<<<<<<<<<<<
@@ -17939,7 +17955,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
  */
   }
 
-  /* "algomodule.pyx":109
+  /* "algomodule.pyx":110
  * 
  * 	# Allocate memory for meraki_hash256
  * 	c_header_hash = <meraki_hash256*>malloc(sizeof(meraki_hash256))             # <<<<<<<<<<<<<<
@@ -17948,7 +17964,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
  */
   __pyx_v_c_header_hash = ((union meraki_hash256 *)malloc((sizeof(union meraki_hash256))));
 
-  /* "algomodule.pyx":110
+  /* "algomodule.pyx":111
  * 	# Allocate memory for meraki_hash256
  * 	c_header_hash = <meraki_hash256*>malloc(sizeof(meraki_hash256))
  * 	c_mix_hash = <meraki_hash256*>malloc(sizeof(meraki_hash256))             # <<<<<<<<<<<<<<
@@ -17957,7 +17973,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
  */
   __pyx_v_c_mix_hash = ((union meraki_hash256 *)malloc((sizeof(union meraki_hash256))));
 
-  /* "algomodule.pyx":112
+  /* "algomodule.pyx":113
  * 	c_mix_hash = <meraki_hash256*>malloc(sizeof(meraki_hash256))
  * 
  * 	if not c_header_hash or not c_mix_hash:             # <<<<<<<<<<<<<<
@@ -17975,20 +17991,20 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
   __pyx_L7_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "algomodule.pyx":113
+    /* "algomodule.pyx":114
  * 
  * 	if not c_header_hash or not c_mix_hash:
  * 		raise MemoryError("Could not allocate memory for meraki_hash256")             # <<<<<<<<<<<<<<
  * 
  * 	try:
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_MemoryError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_Raise(__pyx_t_4, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 113, __pyx_L1_error)
+    __PYX_ERR(0, 114, __pyx_L1_error)
 
-    /* "algomodule.pyx":112
+    /* "algomodule.pyx":113
  * 	c_mix_hash = <meraki_hash256*>malloc(sizeof(meraki_hash256))
  * 
  * 	if not c_header_hash or not c_mix_hash:             # <<<<<<<<<<<<<<
@@ -17997,7 +18013,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
  */
   }
 
-  /* "algomodule.pyx":115
+  /* "algomodule.pyx":116
  * 		raise MemoryError("Could not allocate memory for meraki_hash256")
  * 
  * 	try:             # <<<<<<<<<<<<<<
@@ -18006,37 +18022,37 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
  */
   /*try:*/ {
 
-    /* "algomodule.pyx":117
+    /* "algomodule.pyx":118
  * 	try:
  * 		# Convert Python bytes to bytearrays for writable memoryviews
  * 		mv_header_hash = bytearray(header_hash)  # Create a bytearray             # <<<<<<<<<<<<<<
  * 		mv_mix_hash = bytearray(mix_hash)        # Create a bytearray
  * 
  */
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyByteArray_Type)), __pyx_v_header_hash); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 117, __pyx_L10_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyByteArray_Type)), __pyx_v_header_hash); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L10_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_unsigned_char(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 117, __pyx_L10_error)
+    __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_unsigned_char(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 118, __pyx_L10_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_mv_header_hash = __pyx_t_5;
     __pyx_t_5.memview = NULL;
     __pyx_t_5.data = NULL;
 
-    /* "algomodule.pyx":118
+    /* "algomodule.pyx":119
  * 		# Convert Python bytes to bytearrays for writable memoryviews
  * 		mv_header_hash = bytearray(header_hash)  # Create a bytearray
  * 		mv_mix_hash = bytearray(mix_hash)        # Create a bytearray             # <<<<<<<<<<<<<<
  * 
  * 		# Copy the header_hash and mix_hash bytes into the str field using memcpy
  */
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyByteArray_Type)), __pyx_v_mix_hash); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L10_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyByteArray_Type)), __pyx_v_mix_hash); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L10_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_unsigned_char(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 118, __pyx_L10_error)
+    __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_unsigned_char(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 119, __pyx_L10_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_mv_mix_hash = __pyx_t_5;
     __pyx_t_5.memview = NULL;
     __pyx_t_5.data = NULL;
 
-    /* "algomodule.pyx":121
+    /* "algomodule.pyx":122
  * 
  * 		# Copy the header_hash and mix_hash bytes into the str field using memcpy
  * 		memcpy(c_header_hash.str, &mv_header_hash[0], 32)  # Use address of first element in memoryview             # <<<<<<<<<<<<<<
@@ -18051,11 +18067,11 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
     } else if (unlikely(__pyx_t_6 >= __pyx_v_mv_header_hash.shape[0])) __pyx_t_7 = 0;
     if (unlikely(__pyx_t_7 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_7);
-      __PYX_ERR(0, 121, __pyx_L10_error)
+      __PYX_ERR(0, 122, __pyx_L10_error)
     }
     (void)(memcpy(__pyx_v_c_header_hash->str, (&(*((unsigned char *) ( /* dim=0 */ ((char *) (((unsigned char *) __pyx_v_mv_header_hash.data) + __pyx_t_6)) )))), 32));
 
-    /* "algomodule.pyx":122
+    /* "algomodule.pyx":123
  * 		# Copy the header_hash and mix_hash bytes into the str field using memcpy
  * 		memcpy(c_header_hash.str, &mv_header_hash[0], 32)  # Use address of first element in memoryview
  * 		memcpy(c_mix_hash.str, &mv_mix_hash[0], 32)        # Use address of first element in memoryview             # <<<<<<<<<<<<<<
@@ -18070,11 +18086,11 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
     } else if (unlikely(__pyx_t_6 >= __pyx_v_mv_mix_hash.shape[0])) __pyx_t_7 = 0;
     if (unlikely(__pyx_t_7 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_7);
-      __PYX_ERR(0, 122, __pyx_L10_error)
+      __PYX_ERR(0, 123, __pyx_L10_error)
     }
     (void)(memcpy(__pyx_v_c_mix_hash->str, (&(*((unsigned char *) ( /* dim=0 */ ((char *) (((unsigned char *) __pyx_v_mv_mix_hash.data) + __pyx_t_6)) )))), 32));
 
-    /* "algomodule.pyx":125
+    /* "algomodule.pyx":126
  * 
  * 		# Call the C function light_verify
  * 		result = light_verify(c_header_hash, c_mix_hash, nonce)             # <<<<<<<<<<<<<<
@@ -18083,22 +18099,22 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
  */
     __pyx_v_result = light_verify(__pyx_v_c_header_hash, __pyx_v_c_mix_hash, __pyx_v_nonce);
 
-    /* "algomodule.pyx":128
+    /* "algomodule.pyx":129
  * 
  * 		# Convert the result to a bytes object
  * 		result_bytes = bytes(result.str[:32])             # <<<<<<<<<<<<<<
  * 
  * 		return result_bytes
  */
-    __pyx_t_4 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_result.str) + 0, 32 - 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L10_error)
+    __pyx_t_4 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_result.str) + 0, 32 - 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L10_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 128, __pyx_L10_error)
+    __pyx_t_8 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyBytes_Type)), __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 129, __pyx_L10_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_result_bytes = ((PyObject*)__pyx_t_8);
     __pyx_t_8 = 0;
 
-    /* "algomodule.pyx":130
+    /* "algomodule.pyx":131
  * 		result_bytes = bytes(result.str[:32])
  * 
  * 		return result_bytes             # <<<<<<<<<<<<<<
@@ -18111,7 +18127,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
     goto __pyx_L9_return;
   }
 
-  /* "algomodule.pyx":134
+  /* "algomodule.pyx":135
  * 	finally:
  * 		# Free allocated memory
  * 		free(c_header_hash)             # <<<<<<<<<<<<<<
@@ -18140,7 +18156,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
       {
         free(__pyx_v_c_header_hash);
 
-        /* "algomodule.pyx":135
+        /* "algomodule.pyx":136
  * 		# Free allocated memory
  * 		free(c_header_hash)
  * 		free(c_mix_hash)             # <<<<<<<<<<<<<<
@@ -18167,7 +18183,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
       __pyx_t_16 = __pyx_r;
       __pyx_r = 0;
 
-      /* "algomodule.pyx":134
+      /* "algomodule.pyx":135
  * 	finally:
  * 		# Free allocated memory
  * 		free(c_header_hash)             # <<<<<<<<<<<<<<
@@ -18176,7 +18192,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
  */
       free(__pyx_v_c_header_hash);
 
-      /* "algomodule.pyx":135
+      /* "algomodule.pyx":136
  * 		# Free allocated memory
  * 		free(c_header_hash)
  * 		free(c_mix_hash)             # <<<<<<<<<<<<<<
@@ -18190,7 +18206,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
     }
   }
 
-  /* "algomodule.pyx":96
+  /* "algomodule.pyx":97
  * 
  * # The Python wrapper function for light_verify
  * def _meraki_hash(bytes header_hash, bytes mix_hash, uint64_t nonce):             # <<<<<<<<<<<<<<
@@ -18214,7 +18230,7 @@ static PyObject *__pyx_pf_10algomodule__meraki_hash(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "algomodule.pyx":137
+/* "algomodule.pyx":138
  * 		free(c_mix_hash)
  * 
  * def _ltc_scrypt(hash):             # <<<<<<<<<<<<<<
@@ -18275,12 +18291,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 137, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 138, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_ltc_scrypt") < 0)) __PYX_ERR(0, 137, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_ltc_scrypt") < 0)) __PYX_ERR(0, 138, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -18291,7 +18307,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_ltc_scrypt", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 137, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_ltc_scrypt", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 138, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18329,17 +18345,17 @@ static PyObject *__pyx_pf_10algomodule_2_ltc_scrypt(CYTHON_UNUSED PyObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_ltc_scrypt", 1);
 
-  /* "algomodule.pyx":139
+  /* "algomodule.pyx":140
  * def _ltc_scrypt(hash):
  * 	cdef char output[32];
  * 	scrypt_1024_1_1_256(hash, output);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 140, __pyx_L1_error)
   scrypt_1024_1_1_256(__pyx_t_1, __pyx_v_output);
 
-  /* "algomodule.pyx":140
+  /* "algomodule.pyx":141
  * 	cdef char output[32];
  * 	scrypt_1024_1_1_256(hash, output);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -18347,13 +18363,13 @@ static PyObject *__pyx_pf_10algomodule_2_ltc_scrypt(CYTHON_UNUSED PyObject *__py
  * def _bcrypt_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":137
+  /* "algomodule.pyx":138
  * 		free(c_mix_hash)
  * 
  * def _ltc_scrypt(hash):             # <<<<<<<<<<<<<<
@@ -18372,7 +18388,7 @@ static PyObject *__pyx_pf_10algomodule_2_ltc_scrypt(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "algomodule.pyx":142
+/* "algomodule.pyx":143
  * 	return output[:32];
  * 
  * def _bcrypt_hash(hash):             # <<<<<<<<<<<<<<
@@ -18433,12 +18449,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 142, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 143, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_bcrypt_hash") < 0)) __PYX_ERR(0, 142, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_bcrypt_hash") < 0)) __PYX_ERR(0, 143, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -18449,7 +18465,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_bcrypt_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 142, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_bcrypt_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 143, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18487,17 +18503,17 @@ static PyObject *__pyx_pf_10algomodule_4_bcrypt_hash(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_bcrypt_hash", 1);
 
-  /* "algomodule.pyx":144
+  /* "algomodule.pyx":145
  * def _bcrypt_hash(hash):
  * 	cdef char output[32];
  * 	bcrypt_hash(hash, output);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 145, __pyx_L1_error)
   bcrypt_hash(__pyx_t_1, __pyx_v_output);
 
-  /* "algomodule.pyx":145
+  /* "algomodule.pyx":146
  * 	cdef char output[32];
  * 	bcrypt_hash(hash, output);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -18505,13 +18521,13 @@ static PyObject *__pyx_pf_10algomodule_4_bcrypt_hash(CYTHON_UNUSED PyObject *__p
  * def _keccak_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":142
+  /* "algomodule.pyx":143
  * 	return output[:32];
  * 
  * def _bcrypt_hash(hash):             # <<<<<<<<<<<<<<
@@ -18530,7 +18546,7 @@ static PyObject *__pyx_pf_10algomodule_4_bcrypt_hash(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "algomodule.pyx":147
+/* "algomodule.pyx":148
  * 	return output[:32];
  * 
  * def _keccak_hash(hash):             # <<<<<<<<<<<<<<
@@ -18591,12 +18607,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 147, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_keccak_hash") < 0)) __PYX_ERR(0, 147, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_keccak_hash") < 0)) __PYX_ERR(0, 148, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -18607,7 +18623,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_keccak_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 147, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_keccak_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 148, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18647,27 +18663,27 @@ static PyObject *__pyx_pf_10algomodule_6_keccak_hash(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_keccak_hash", 1);
 
-  /* "algomodule.pyx":149
+  /* "algomodule.pyx":150
  * def _keccak_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	keccak_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 150, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":150
+  /* "algomodule.pyx":151
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	keccak_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 151, __pyx_L1_error)
   keccak_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":151
+  /* "algomodule.pyx":152
  * 	cdef uint32_t input_len = len(hash);
  * 	keccak_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -18675,13 +18691,13 @@ static PyObject *__pyx_pf_10algomodule_6_keccak_hash(CYTHON_UNUSED PyObject *__p
  * def _quark_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":147
+  /* "algomodule.pyx":148
  * 	return output[:32];
  * 
  * def _keccak_hash(hash):             # <<<<<<<<<<<<<<
@@ -18700,7 +18716,7 @@ static PyObject *__pyx_pf_10algomodule_6_keccak_hash(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "algomodule.pyx":153
+/* "algomodule.pyx":154
  * 	return output[:32];
  * 
  * def _quark_hash(hash):             # <<<<<<<<<<<<<<
@@ -18761,12 +18777,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 153, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 154, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_quark_hash") < 0)) __PYX_ERR(0, 153, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_quark_hash") < 0)) __PYX_ERR(0, 154, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -18777,7 +18793,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_quark_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 153, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_quark_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 154, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18817,27 +18833,27 @@ static PyObject *__pyx_pf_10algomodule_8_quark_hash(CYTHON_UNUSED PyObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_quark_hash", 1);
 
-  /* "algomodule.pyx":155
+  /* "algomodule.pyx":156
  * def _quark_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	quark_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 155, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 156, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":156
+  /* "algomodule.pyx":157
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	quark_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L1_error)
   quark_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":157
+  /* "algomodule.pyx":158
  * 	cdef uint32_t input_len = len(hash);
  * 	quark_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -18845,13 +18861,13 @@ static PyObject *__pyx_pf_10algomodule_8_quark_hash(CYTHON_UNUSED PyObject *__py
  * def _skein_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":153
+  /* "algomodule.pyx":154
  * 	return output[:32];
  * 
  * def _quark_hash(hash):             # <<<<<<<<<<<<<<
@@ -18870,7 +18886,7 @@ static PyObject *__pyx_pf_10algomodule_8_quark_hash(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "algomodule.pyx":159
+/* "algomodule.pyx":160
  * 	return output[:32];
  * 
  * def _skein_hash(hash):             # <<<<<<<<<<<<<<
@@ -18931,12 +18947,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 160, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_skein_hash") < 0)) __PYX_ERR(0, 159, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_skein_hash") < 0)) __PYX_ERR(0, 160, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -18947,7 +18963,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_skein_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 159, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_skein_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 160, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18987,27 +19003,27 @@ static PyObject *__pyx_pf_10algomodule_10_skein_hash(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_skein_hash", 1);
 
-  /* "algomodule.pyx":161
+  /* "algomodule.pyx":162
  * def _skein_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	skein_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 161, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 162, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":162
+  /* "algomodule.pyx":163
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	skein_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 163, __pyx_L1_error)
   skein_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":163
+  /* "algomodule.pyx":164
  * 	cdef uint32_t input_len = len(hash);
  * 	skein_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -19015,13 +19031,13 @@ static PyObject *__pyx_pf_10algomodule_10_skein_hash(CYTHON_UNUSED PyObject *__p
  * def _x11_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":159
+  /* "algomodule.pyx":160
  * 	return output[:32];
  * 
  * def _skein_hash(hash):             # <<<<<<<<<<<<<<
@@ -19040,7 +19056,7 @@ static PyObject *__pyx_pf_10algomodule_10_skein_hash(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "algomodule.pyx":165
+/* "algomodule.pyx":166
  * 	return output[:32];
  * 
  * def _x11_hash(hash):             # <<<<<<<<<<<<<<
@@ -19101,12 +19117,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 166, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x11_hash") < 0)) __PYX_ERR(0, 165, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x11_hash") < 0)) __PYX_ERR(0, 166, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -19117,7 +19133,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_x11_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 165, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_x11_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 166, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19157,27 +19173,27 @@ static PyObject *__pyx_pf_10algomodule_12_x11_hash(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_x11_hash", 1);
 
-  /* "algomodule.pyx":167
+  /* "algomodule.pyx":168
  * def _x11_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	x11_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 168, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":168
+  /* "algomodule.pyx":169
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	x11_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 169, __pyx_L1_error)
   x11_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":169
+  /* "algomodule.pyx":170
  * 	cdef uint32_t input_len = len(hash);
  * 	x11_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -19185,13 +19201,13 @@ static PyObject *__pyx_pf_10algomodule_12_x11_hash(CYTHON_UNUSED PyObject *__pyx
  * def _groestl_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":165
+  /* "algomodule.pyx":166
  * 	return output[:32];
  * 
  * def _x11_hash(hash):             # <<<<<<<<<<<<<<
@@ -19210,7 +19226,7 @@ static PyObject *__pyx_pf_10algomodule_12_x11_hash(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "algomodule.pyx":171
+/* "algomodule.pyx":172
  * 	return output[:32];
  * 
  * def _groestl_hash(hash):             # <<<<<<<<<<<<<<
@@ -19271,12 +19287,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 172, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_groestl_hash") < 0)) __PYX_ERR(0, 171, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_groestl_hash") < 0)) __PYX_ERR(0, 172, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -19287,7 +19303,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_groestl_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 171, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_groestl_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 172, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19327,27 +19343,27 @@ static PyObject *__pyx_pf_10algomodule_14_groestl_hash(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_groestl_hash", 1);
 
-  /* "algomodule.pyx":173
+  /* "algomodule.pyx":174
  * def _groestl_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	groestl_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 174, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":174
+  /* "algomodule.pyx":175
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	groestl_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 175, __pyx_L1_error)
   groestl_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":175
+  /* "algomodule.pyx":176
  * 	cdef uint32_t input_len = len(hash);
  * 	groestl_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -19355,13 +19371,13 @@ static PyObject *__pyx_pf_10algomodule_14_groestl_hash(CYTHON_UNUSED PyObject *_
  * def _mgroestl_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 176, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":171
+  /* "algomodule.pyx":172
  * 	return output[:32];
  * 
  * def _groestl_hash(hash):             # <<<<<<<<<<<<<<
@@ -19380,7 +19396,7 @@ static PyObject *__pyx_pf_10algomodule_14_groestl_hash(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "algomodule.pyx":177
+/* "algomodule.pyx":178
  * 	return output[:32];
  * 
  * def _mgroestl_hash(hash):             # <<<<<<<<<<<<<<
@@ -19441,12 +19457,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 177, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_mgroestl_hash") < 0)) __PYX_ERR(0, 177, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_mgroestl_hash") < 0)) __PYX_ERR(0, 178, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -19457,7 +19473,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_mgroestl_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 177, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_mgroestl_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 178, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19497,27 +19513,27 @@ static PyObject *__pyx_pf_10algomodule_16_mgroestl_hash(CYTHON_UNUSED PyObject *
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_mgroestl_hash", 1);
 
-  /* "algomodule.pyx":179
+  /* "algomodule.pyx":180
  * def _mgroestl_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	groestlmyriad_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 180, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":180
+  /* "algomodule.pyx":181
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	groestlmyriad_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 181, __pyx_L1_error)
   groestlmyriad_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":181
+  /* "algomodule.pyx":182
  * 	cdef uint32_t input_len = len(hash);
  * 	groestlmyriad_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -19525,13 +19541,13 @@ static PyObject *__pyx_pf_10algomodule_16_mgroestl_hash(CYTHON_UNUSED PyObject *
  * def _blake_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 181, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":177
+  /* "algomodule.pyx":178
  * 	return output[:32];
  * 
  * def _mgroestl_hash(hash):             # <<<<<<<<<<<<<<
@@ -19550,7 +19566,7 @@ static PyObject *__pyx_pf_10algomodule_16_mgroestl_hash(CYTHON_UNUSED PyObject *
   return __pyx_r;
 }
 
-/* "algomodule.pyx":183
+/* "algomodule.pyx":184
  * 	return output[:32];
  * 
  * def _blake_hash(hash):             # <<<<<<<<<<<<<<
@@ -19611,12 +19627,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 184, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_blake_hash") < 0)) __PYX_ERR(0, 183, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_blake_hash") < 0)) __PYX_ERR(0, 184, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -19627,7 +19643,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_blake_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 183, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_blake_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 184, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19667,27 +19683,27 @@ static PyObject *__pyx_pf_10algomodule_18_blake_hash(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_blake_hash", 1);
 
-  /* "algomodule.pyx":185
+  /* "algomodule.pyx":186
  * def _blake_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	blake_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 186, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":186
+  /* "algomodule.pyx":187
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	blake_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 187, __pyx_L1_error)
   blake_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":187
+  /* "algomodule.pyx":188
  * 	cdef uint32_t input_len = len(hash);
  * 	blake_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -19695,13 +19711,13 @@ static PyObject *__pyx_pf_10algomodule_18_blake_hash(CYTHON_UNUSED PyObject *__p
  * def _fugue_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 187, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":183
+  /* "algomodule.pyx":184
  * 	return output[:32];
  * 
  * def _blake_hash(hash):             # <<<<<<<<<<<<<<
@@ -19720,7 +19736,7 @@ static PyObject *__pyx_pf_10algomodule_18_blake_hash(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "algomodule.pyx":189
+/* "algomodule.pyx":190
  * 	return output[:32];
  * 
  * def _fugue_hash(hash):             # <<<<<<<<<<<<<<
@@ -19781,12 +19797,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 189, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 190, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_fugue_hash") < 0)) __PYX_ERR(0, 189, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_fugue_hash") < 0)) __PYX_ERR(0, 190, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -19797,7 +19813,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_fugue_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 189, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_fugue_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 190, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19837,27 +19853,27 @@ static PyObject *__pyx_pf_10algomodule_20_fugue_hash(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_fugue_hash", 1);
 
-  /* "algomodule.pyx":191
+  /* "algomodule.pyx":192
  * def _fugue_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	fugue_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 192, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":192
+  /* "algomodule.pyx":193
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	fugue_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
   fugue_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":193
+  /* "algomodule.pyx":194
  * 	cdef uint32_t input_len = len(hash);
  * 	fugue_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -19865,13 +19881,13 @@ static PyObject *__pyx_pf_10algomodule_20_fugue_hash(CYTHON_UNUSED PyObject *__p
  * def _qubit_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":189
+  /* "algomodule.pyx":190
  * 	return output[:32];
  * 
  * def _fugue_hash(hash):             # <<<<<<<<<<<<<<
@@ -19890,7 +19906,7 @@ static PyObject *__pyx_pf_10algomodule_20_fugue_hash(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "algomodule.pyx":195
+/* "algomodule.pyx":196
  * 	return output[:32];
  * 
  * def _qubit_hash(hash):             # <<<<<<<<<<<<<<
@@ -19951,12 +19967,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 195, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 196, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_qubit_hash") < 0)) __PYX_ERR(0, 195, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_qubit_hash") < 0)) __PYX_ERR(0, 196, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -19967,7 +19983,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_qubit_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 195, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_qubit_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 196, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -20007,27 +20023,27 @@ static PyObject *__pyx_pf_10algomodule_22_qubit_hash(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_qubit_hash", 1);
 
-  /* "algomodule.pyx":197
+  /* "algomodule.pyx":198
  * def _qubit_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	qubit_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 198, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":198
+  /* "algomodule.pyx":199
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	qubit_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 199, __pyx_L1_error)
   qubit_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":199
+  /* "algomodule.pyx":200
  * 	cdef uint32_t input_len = len(hash);
  * 	qubit_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -20035,13 +20051,13 @@ static PyObject *__pyx_pf_10algomodule_22_qubit_hash(CYTHON_UNUSED PyObject *__p
  * def _hefty1_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":195
+  /* "algomodule.pyx":196
  * 	return output[:32];
  * 
  * def _qubit_hash(hash):             # <<<<<<<<<<<<<<
@@ -20060,7 +20076,7 @@ static PyObject *__pyx_pf_10algomodule_22_qubit_hash(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "algomodule.pyx":201
+/* "algomodule.pyx":202
  * 	return output[:32];
  * 
  * def _hefty1_hash(hash):             # <<<<<<<<<<<<<<
@@ -20121,12 +20137,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 201, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 202, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_hefty1_hash") < 0)) __PYX_ERR(0, 201, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_hefty1_hash") < 0)) __PYX_ERR(0, 202, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -20137,7 +20153,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_hefty1_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 201, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_hefty1_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 202, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -20177,27 +20193,27 @@ static PyObject *__pyx_pf_10algomodule_24_hefty1_hash(CYTHON_UNUSED PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_hefty1_hash", 1);
 
-  /* "algomodule.pyx":203
+  /* "algomodule.pyx":204
  * def _hefty1_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	hefty1_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 204, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":204
+  /* "algomodule.pyx":205
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	hefty1_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L1_error)
   hefty1_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":205
+  /* "algomodule.pyx":206
  * 	cdef uint32_t input_len = len(hash);
  * 	hefty1_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -20205,13 +20221,13 @@ static PyObject *__pyx_pf_10algomodule_24_hefty1_hash(CYTHON_UNUSED PyObject *__
  * def _shavite3_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":201
+  /* "algomodule.pyx":202
  * 	return output[:32];
  * 
  * def _hefty1_hash(hash):             # <<<<<<<<<<<<<<
@@ -20230,7 +20246,7 @@ static PyObject *__pyx_pf_10algomodule_24_hefty1_hash(CYTHON_UNUSED PyObject *__
   return __pyx_r;
 }
 
-/* "algomodule.pyx":207
+/* "algomodule.pyx":208
  * 	return output[:32];
  * 
  * def _shavite3_hash(hash):             # <<<<<<<<<<<<<<
@@ -20291,12 +20307,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 207, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_shavite3_hash") < 0)) __PYX_ERR(0, 207, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_shavite3_hash") < 0)) __PYX_ERR(0, 208, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -20307,7 +20323,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_shavite3_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 207, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_shavite3_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 208, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -20347,27 +20363,27 @@ static PyObject *__pyx_pf_10algomodule_26_shavite3_hash(CYTHON_UNUSED PyObject *
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_shavite3_hash", 1);
 
-  /* "algomodule.pyx":209
+  /* "algomodule.pyx":210
  * def _shavite3_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	shavite3_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 210, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":210
+  /* "algomodule.pyx":211
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	shavite3_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L1_error)
   shavite3_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":211
+  /* "algomodule.pyx":212
  * 	cdef uint32_t input_len = len(hash);
  * 	shavite3_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -20375,13 +20391,13 @@ static PyObject *__pyx_pf_10algomodule_26_shavite3_hash(CYTHON_UNUSED PyObject *
  * def _x13_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":207
+  /* "algomodule.pyx":208
  * 	return output[:32];
  * 
  * def _shavite3_hash(hash):             # <<<<<<<<<<<<<<
@@ -20400,7 +20416,7 @@ static PyObject *__pyx_pf_10algomodule_26_shavite3_hash(CYTHON_UNUSED PyObject *
   return __pyx_r;
 }
 
-/* "algomodule.pyx":213
+/* "algomodule.pyx":214
  * 	return output[:32];
  * 
  * def _x13_hash(hash):             # <<<<<<<<<<<<<<
@@ -20461,12 +20477,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 213, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 214, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x13_hash") < 0)) __PYX_ERR(0, 213, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x13_hash") < 0)) __PYX_ERR(0, 214, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -20477,7 +20493,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_x13_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 213, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_x13_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 214, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -20517,27 +20533,27 @@ static PyObject *__pyx_pf_10algomodule_28_x13_hash(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_x13_hash", 1);
 
-  /* "algomodule.pyx":215
+  /* "algomodule.pyx":216
  * def _x13_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	x13_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 216, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":216
+  /* "algomodule.pyx":217
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	x13_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 217, __pyx_L1_error)
   x13_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":217
+  /* "algomodule.pyx":218
  * 	cdef uint32_t input_len = len(hash);
  * 	x13_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -20545,13 +20561,13 @@ static PyObject *__pyx_pf_10algomodule_28_x13_hash(CYTHON_UNUSED PyObject *__pyx
  * def _nist5_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":213
+  /* "algomodule.pyx":214
  * 	return output[:32];
  * 
  * def _x13_hash(hash):             # <<<<<<<<<<<<<<
@@ -20570,7 +20586,7 @@ static PyObject *__pyx_pf_10algomodule_28_x13_hash(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "algomodule.pyx":219
+/* "algomodule.pyx":220
  * 	return output[:32];
  * 
  * def _nist5_hash(hash):             # <<<<<<<<<<<<<<
@@ -20631,12 +20647,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 219, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 220, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_nist5_hash") < 0)) __PYX_ERR(0, 219, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_nist5_hash") < 0)) __PYX_ERR(0, 220, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -20647,7 +20663,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_nist5_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 219, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_nist5_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 220, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -20687,27 +20703,27 @@ static PyObject *__pyx_pf_10algomodule_30_nist5_hash(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_nist5_hash", 1);
 
-  /* "algomodule.pyx":221
+  /* "algomodule.pyx":222
  * def _nist5_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	nist5_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 222, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":222
+  /* "algomodule.pyx":223
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	nist5_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 222, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 223, __pyx_L1_error)
   nist5_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":223
+  /* "algomodule.pyx":224
  * 	cdef uint32_t input_len = len(hash);
  * 	nist5_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -20715,13 +20731,13 @@ static PyObject *__pyx_pf_10algomodule_30_nist5_hash(CYTHON_UNUSED PyObject *__p
  * def _x15_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":219
+  /* "algomodule.pyx":220
  * 	return output[:32];
  * 
  * def _nist5_hash(hash):             # <<<<<<<<<<<<<<
@@ -20740,7 +20756,7 @@ static PyObject *__pyx_pf_10algomodule_30_nist5_hash(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "algomodule.pyx":225
+/* "algomodule.pyx":226
  * 	return output[:32];
  * 
  * def _x15_hash(hash):             # <<<<<<<<<<<<<<
@@ -20801,12 +20817,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 225, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 226, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x15_hash") < 0)) __PYX_ERR(0, 225, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x15_hash") < 0)) __PYX_ERR(0, 226, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -20817,7 +20833,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_x15_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 225, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_x15_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 226, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -20857,27 +20873,27 @@ static PyObject *__pyx_pf_10algomodule_32_x15_hash(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_x15_hash", 1);
 
-  /* "algomodule.pyx":227
+  /* "algomodule.pyx":228
  * def _x15_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	x15_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 228, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":228
+  /* "algomodule.pyx":229
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	x15_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 228, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 229, __pyx_L1_error)
   x15_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":229
+  /* "algomodule.pyx":230
  * 	cdef uint32_t input_len = len(hash);
  * 	x15_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -20885,13 +20901,13 @@ static PyObject *__pyx_pf_10algomodule_32_x15_hash(CYTHON_UNUSED PyObject *__pyx
  * def _fresh_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":225
+  /* "algomodule.pyx":226
  * 	return output[:32];
  * 
  * def _x15_hash(hash):             # <<<<<<<<<<<<<<
@@ -20910,7 +20926,7 @@ static PyObject *__pyx_pf_10algomodule_32_x15_hash(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "algomodule.pyx":231
+/* "algomodule.pyx":232
  * 	return output[:32];
  * 
  * def _fresh_hash(hash):             # <<<<<<<<<<<<<<
@@ -20971,12 +20987,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 231, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 232, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_fresh_hash") < 0)) __PYX_ERR(0, 231, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_fresh_hash") < 0)) __PYX_ERR(0, 232, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -20987,7 +21003,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_fresh_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 231, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_fresh_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 232, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -21027,27 +21043,27 @@ static PyObject *__pyx_pf_10algomodule_34_fresh_hash(CYTHON_UNUSED PyObject *__p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_fresh_hash", 1);
 
-  /* "algomodule.pyx":233
+  /* "algomodule.pyx":234
  * def _fresh_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	fresh_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 233, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 234, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":234
+  /* "algomodule.pyx":235
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	fresh_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 235, __pyx_L1_error)
   fresh_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":235
+  /* "algomodule.pyx":236
  * 	cdef uint32_t input_len = len(hash);
  * 	fresh_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -21055,13 +21071,13 @@ static PyObject *__pyx_pf_10algomodule_34_fresh_hash(CYTHON_UNUSED PyObject *__p
  * def _x14_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 235, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":231
+  /* "algomodule.pyx":232
  * 	return output[:32];
  * 
  * def _fresh_hash(hash):             # <<<<<<<<<<<<<<
@@ -21080,7 +21096,7 @@ static PyObject *__pyx_pf_10algomodule_34_fresh_hash(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "algomodule.pyx":237
+/* "algomodule.pyx":238
  * 	return output[:32];
  * 
  * def _x14_hash(hash):             # <<<<<<<<<<<<<<
@@ -21141,12 +21157,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 237, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 238, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x14_hash") < 0)) __PYX_ERR(0, 237, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x14_hash") < 0)) __PYX_ERR(0, 238, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -21157,7 +21173,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_x14_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 237, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_x14_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 238, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -21197,27 +21213,27 @@ static PyObject *__pyx_pf_10algomodule_36_x14_hash(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_x14_hash", 1);
 
-  /* "algomodule.pyx":239
+  /* "algomodule.pyx":240
  * def _x14_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	x14_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 240, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":240
+  /* "algomodule.pyx":241
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	x14_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 240, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 241, __pyx_L1_error)
   x14_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":241
+  /* "algomodule.pyx":242
  * 	cdef uint32_t input_len = len(hash);
  * 	x14_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -21225,13 +21241,13 @@ static PyObject *__pyx_pf_10algomodule_36_x14_hash(CYTHON_UNUSED PyObject *__pyx
  * def _neoscrypt_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 241, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":237
+  /* "algomodule.pyx":238
  * 	return output[:32];
  * 
  * def _x14_hash(hash):             # <<<<<<<<<<<<<<
@@ -21250,11 +21266,11 @@ static PyObject *__pyx_pf_10algomodule_36_x14_hash(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "algomodule.pyx":243
+/* "algomodule.pyx":244
  * 	return output[:32];
  * 
  * def _neoscrypt_hash(hash):             # <<<<<<<<<<<<<<
- * 	cdef char output[32];
+ * 	cdef unsigned char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
 
@@ -21311,12 +21327,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 244, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_neoscrypt_hash") < 0)) __PYX_ERR(0, 243, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_neoscrypt_hash") < 0)) __PYX_ERR(0, 244, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -21327,7 +21343,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_neoscrypt_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 243, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_neoscrypt_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 244, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -21355,39 +21371,39 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 }
 
 static PyObject *__pyx_pf_10algomodule_38_neoscrypt_hash(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_hash) {
-  char __pyx_v_output[32];
+  unsigned char __pyx_v_output[32];
   uint32_t __pyx_v_input_len;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
-  char const *__pyx_t_2;
+  unsigned char const *__pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_neoscrypt_hash", 1);
 
-  /* "algomodule.pyx":245
+  /* "algomodule.pyx":246
  * def _neoscrypt_hash(hash):
- * 	cdef char output[32];
+ * 	cdef unsigned char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	neoscrypt_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 246, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":246
- * 	cdef char output[32];
+  /* "algomodule.pyx":247
+ * 	cdef unsigned char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	neoscrypt_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsUString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L1_error)
   neoscrypt_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":247
+  /* "algomodule.pyx":248
  * 	cdef uint32_t input_len = len(hash);
  * 	neoscrypt_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -21395,17 +21411,17 @@ static PyObject *__pyx_pf_10algomodule_38_neoscrypt_hash(CYTHON_UNUSED PyObject 
  * def _dcrypt_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 247, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":243
+  /* "algomodule.pyx":244
  * 	return output[:32];
  * 
  * def _neoscrypt_hash(hash):             # <<<<<<<<<<<<<<
- * 	cdef char output[32];
+ * 	cdef unsigned char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
 
@@ -21420,7 +21436,7 @@ static PyObject *__pyx_pf_10algomodule_38_neoscrypt_hash(CYTHON_UNUSED PyObject 
   return __pyx_r;
 }
 
-/* "algomodule.pyx":249
+/* "algomodule.pyx":250
  * 	return output[:32];
  * 
  * def _dcrypt_hash(hash):             # <<<<<<<<<<<<<<
@@ -21481,12 +21497,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 249, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_dcrypt_hash") < 0)) __PYX_ERR(0, 249, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_dcrypt_hash") < 0)) __PYX_ERR(0, 250, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -21497,7 +21513,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_dcrypt_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 249, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_dcrypt_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 250, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -21537,27 +21553,27 @@ static PyObject *__pyx_pf_10algomodule_40_dcrypt_hash(CYTHON_UNUSED PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_dcrypt_hash", 1);
 
-  /* "algomodule.pyx":251
+  /* "algomodule.pyx":252
  * def _dcrypt_hash(hash):
  * 	cdef char output[32];
  * 	cdef int input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	dcrypt_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 251, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 252, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":252
+  /* "algomodule.pyx":253
  * 	cdef char output[32];
  * 	cdef int input_len = len(hash);
  * 	dcrypt_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 253, __pyx_L1_error)
   dcrypt_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":253
+  /* "algomodule.pyx":254
  * 	cdef int input_len = len(hash);
  * 	dcrypt_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -21565,13 +21581,13 @@ static PyObject *__pyx_pf_10algomodule_40_dcrypt_hash(CYTHON_UNUSED PyObject *__
  * def _bitblock_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 253, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":249
+  /* "algomodule.pyx":250
  * 	return output[:32];
  * 
  * def _dcrypt_hash(hash):             # <<<<<<<<<<<<<<
@@ -21590,7 +21606,7 @@ static PyObject *__pyx_pf_10algomodule_40_dcrypt_hash(CYTHON_UNUSED PyObject *__
   return __pyx_r;
 }
 
-/* "algomodule.pyx":255
+/* "algomodule.pyx":256
  * 	return output[:32];
  * 
  * def _bitblock_hash(hash):             # <<<<<<<<<<<<<<
@@ -21651,12 +21667,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 255, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 256, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_bitblock_hash") < 0)) __PYX_ERR(0, 255, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_bitblock_hash") < 0)) __PYX_ERR(0, 256, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -21667,7 +21683,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_bitblock_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 255, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_bitblock_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 256, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -21705,17 +21721,17 @@ static PyObject *__pyx_pf_10algomodule_42_bitblock_hash(CYTHON_UNUSED PyObject *
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_bitblock_hash", 1);
 
-  /* "algomodule.pyx":257
+  /* "algomodule.pyx":258
  * def _bitblock_hash(hash):
  * 	cdef char output[32];
  * 	bitblock_hash(hash, output);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 258, __pyx_L1_error)
   bitblock_hash(__pyx_t_1, __pyx_v_output);
 
-  /* "algomodule.pyx":258
+  /* "algomodule.pyx":259
  * 	cdef char output[32];
  * 	bitblock_hash(hash, output);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -21723,13 +21739,13 @@ static PyObject *__pyx_pf_10algomodule_42_bitblock_hash(CYTHON_UNUSED PyObject *
  * def _twe_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":255
+  /* "algomodule.pyx":256
  * 	return output[:32];
  * 
  * def _bitblock_hash(hash):             # <<<<<<<<<<<<<<
@@ -21748,7 +21764,7 @@ static PyObject *__pyx_pf_10algomodule_42_bitblock_hash(CYTHON_UNUSED PyObject *
   return __pyx_r;
 }
 
-/* "algomodule.pyx":260
+/* "algomodule.pyx":261
  * 	return output[:32];
  * 
  * def _twe_hash(hash):             # <<<<<<<<<<<<<<
@@ -21809,12 +21825,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 260, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 261, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_twe_hash") < 0)) __PYX_ERR(0, 260, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_twe_hash") < 0)) __PYX_ERR(0, 261, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -21825,7 +21841,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_twe_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 260, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_twe_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 261, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -21865,27 +21881,27 @@ static PyObject *__pyx_pf_10algomodule_44_twe_hash(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_twe_hash", 1);
 
-  /* "algomodule.pyx":262
+  /* "algomodule.pyx":263
  * def _twe_hash(hash):
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);             # <<<<<<<<<<<<<<
  * 	twe_hash(hash, output, input_len);
  * 	return output[:32];
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_hash); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 263, __pyx_L1_error)
   __pyx_v_input_len = __pyx_t_1;
 
-  /* "algomodule.pyx":263
+  /* "algomodule.pyx":264
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  * 	twe_hash(hash, output, input_len);             # <<<<<<<<<<<<<<
  * 	return output[:32];
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 264, __pyx_L1_error)
   twe_hash(__pyx_t_2, __pyx_v_output, __pyx_v_input_len);
 
-  /* "algomodule.pyx":264
+  /* "algomodule.pyx":265
  * 	cdef uint32_t input_len = len(hash);
  * 	twe_hash(hash, output, input_len);
  * 	return output[:32];             # <<<<<<<<<<<<<<
@@ -21893,13 +21909,13 @@ static PyObject *__pyx_pf_10algomodule_44_twe_hash(CYTHON_UNUSED PyObject *__pyx
  * def _threes_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 264, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 265, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":260
+  /* "algomodule.pyx":261
  * 	return output[:32];
  * 
  * def _twe_hash(hash):             # <<<<<<<<<<<<<<
@@ -21918,7 +21934,7 @@ static PyObject *__pyx_pf_10algomodule_44_twe_hash(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "algomodule.pyx":266
+/* "algomodule.pyx":267
  * 	return output[:32];
  * 
  * def _threes_hash(hash):             # <<<<<<<<<<<<<<
@@ -21979,12 +21995,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 266, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 267, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_threes_hash") < 0)) __PYX_ERR(0, 266, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_threes_hash") < 0)) __PYX_ERR(0, 267, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -21995,7 +22011,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_threes_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 266, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_threes_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 267, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -22033,17 +22049,17 @@ static PyObject *__pyx_pf_10algomodule_46_threes_hash(CYTHON_UNUSED PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_threes_hash", 1);
 
-  /* "algomodule.pyx":268
+  /* "algomodule.pyx":269
  * def _threes_hash(hash):
  * 	cdef char output[32];
  * 	threes_hash(hash, output);             # <<<<<<<<<<<<<<
  * 	return output[:32]
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 269, __pyx_L1_error)
   threes_hash(__pyx_t_1, __pyx_v_output);
 
-  /* "algomodule.pyx":269
+  /* "algomodule.pyx":270
  * 	cdef char output[32];
  * 	threes_hash(hash, output);
  * 	return output[:32]             # <<<<<<<<<<<<<<
@@ -22051,13 +22067,13 @@ static PyObject *__pyx_pf_10algomodule_46_threes_hash(CYTHON_UNUSED PyObject *__
  * def _jackpot_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 270, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":266
+  /* "algomodule.pyx":267
  * 	return output[:32];
  * 
  * def _threes_hash(hash):             # <<<<<<<<<<<<<<
@@ -22076,7 +22092,7 @@ static PyObject *__pyx_pf_10algomodule_46_threes_hash(CYTHON_UNUSED PyObject *__
   return __pyx_r;
 }
 
-/* "algomodule.pyx":271
+/* "algomodule.pyx":272
  * 	return output[:32]
  * 
  * def _jackpot_hash(hash):             # <<<<<<<<<<<<<<
@@ -22137,12 +22153,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 271, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_jackpot_hash") < 0)) __PYX_ERR(0, 271, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_jackpot_hash") < 0)) __PYX_ERR(0, 272, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -22153,7 +22169,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_jackpot_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 271, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_jackpot_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 272, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -22191,17 +22207,17 @@ static PyObject *__pyx_pf_10algomodule_48_jackpot_hash(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_jackpot_hash", 1);
 
-  /* "algomodule.pyx":273
+  /* "algomodule.pyx":274
  * def _jackpot_hash(hash):
  * 	cdef char output[32]
  * 	jackpot_hash(hash, output);             # <<<<<<<<<<<<<<
  * 	return output[:32]
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 274, __pyx_L1_error)
   jackpot_hash(__pyx_t_1, __pyx_v_output);
 
-  /* "algomodule.pyx":274
+  /* "algomodule.pyx":275
  * 	cdef char output[32]
  * 	jackpot_hash(hash, output);
  * 	return output[:32]             # <<<<<<<<<<<<<<
@@ -22209,13 +22225,13 @@ static PyObject *__pyx_pf_10algomodule_48_jackpot_hash(CYTHON_UNUSED PyObject *_
  * def _x17_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":271
+  /* "algomodule.pyx":272
  * 	return output[:32]
  * 
  * def _jackpot_hash(hash):             # <<<<<<<<<<<<<<
@@ -22234,7 +22250,7 @@ static PyObject *__pyx_pf_10algomodule_48_jackpot_hash(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "algomodule.pyx":276
+/* "algomodule.pyx":277
  * 	return output[:32]
  * 
  * def _x17_hash(hash):             # <<<<<<<<<<<<<<
@@ -22295,12 +22311,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 276, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 277, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x17_hash") < 0)) __PYX_ERR(0, 276, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x17_hash") < 0)) __PYX_ERR(0, 277, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -22311,7 +22327,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_x17_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 276, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_x17_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 277, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -22349,17 +22365,17 @@ static PyObject *__pyx_pf_10algomodule_50_x17_hash(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_x17_hash", 1);
 
-  /* "algomodule.pyx":278
+  /* "algomodule.pyx":279
  * def _x17_hash(hash):
  * 	cdef char output[32]
  * 	x17_hash(hash, output);             # <<<<<<<<<<<<<<
  * 	return output[:32]
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 279, __pyx_L1_error)
   x17_hash(__pyx_t_1, __pyx_v_output);
 
-  /* "algomodule.pyx":279
+  /* "algomodule.pyx":280
  * 	cdef char output[32]
  * 	x17_hash(hash, output);
  * 	return output[:32]             # <<<<<<<<<<<<<<
@@ -22367,13 +22383,13 @@ static PyObject *__pyx_pf_10algomodule_50_x17_hash(CYTHON_UNUSED PyObject *__pyx
  * def _x16rv2_hash(hash):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 280, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":276
+  /* "algomodule.pyx":277
  * 	return output[:32]
  * 
  * def _x17_hash(hash):             # <<<<<<<<<<<<<<
@@ -22392,7 +22408,7 @@ static PyObject *__pyx_pf_10algomodule_50_x17_hash(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "algomodule.pyx":281
+/* "algomodule.pyx":282
  * 	return output[:32]
  * 
  * def _x16rv2_hash(hash):             # <<<<<<<<<<<<<<
@@ -22453,12 +22469,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 281, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 282, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x16rv2_hash") < 0)) __PYX_ERR(0, 281, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "_x16rv2_hash") < 0)) __PYX_ERR(0, 282, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -22469,7 +22485,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_x16rv2_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 281, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_x16rv2_hash", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 282, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -22507,28 +22523,28 @@ static PyObject *__pyx_pf_10algomodule_52_x16rv2_hash(CYTHON_UNUSED PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_x16rv2_hash", 1);
 
-  /* "algomodule.pyx":283
+  /* "algomodule.pyx":284
  * def _x16rv2_hash(hash):
  * 	cdef char output[32]
  * 	x16rv2_hash(hash, output);             # <<<<<<<<<<<<<<
  * 	return output[:32]
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_hash); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 284, __pyx_L1_error)
   x16rv2_hash(__pyx_t_1, __pyx_v_output);
 
-  /* "algomodule.pyx":284
+  /* "algomodule.pyx":285
  * 	cdef char output[32]
  * 	x16rv2_hash(hash, output);
  * 	return output[:32]             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 284, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromStringAndSize(((const char*)__pyx_v_output) + 0, 32 - 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "algomodule.pyx":281
+  /* "algomodule.pyx":282
  * 	return output[:32]
  * 
  * def _x16rv2_hash(hash):             # <<<<<<<<<<<<<<
@@ -23339,6 +23355,7 @@ static PyObject *__pyx_tp_new__memoryviewslice(PyTypeObject *t, PyObject *a, PyO
   if (unlikely(!o)) return 0;
   p = ((struct __pyx_memoryviewslice_obj *)o);
   p->__pyx_base.__pyx_vtab = (struct __pyx_vtabstruct_memoryview*)__pyx_vtabptr__memoryviewslice;
+  new((void*)&(p->from_slice)) __Pyx_memviewslice();
   p->from_object = Py_None; Py_INCREF(Py_None);
   p->from_slice.memview = NULL;
   return o;
@@ -23362,6 +23379,7 @@ static void __pyx_tp_dealloc__memoryviewslice(PyObject *o) {
     __Pyx_SET_REFCNT(o, Py_REFCNT(o) - 1);
     PyErr_Restore(etype, eval, etb);
   }
+  __Pyx_call_destructor(p->from_slice);
   Py_CLEAR(p->from_object);
   PyObject_GC_Track(o);
   __pyx_tp_dealloc_memoryview(o);
@@ -23687,8 +23705,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 }
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 99, __pyx_L1_error)
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 100, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 114, __pyx_L1_error)
   __pyx_builtin___import__ = __Pyx_GetBuiltinName(__pyx_n_s_import); if (!__pyx_builtin___import__) __PYX_ERR(1, 100, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 159, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
@@ -23743,25 +23761,25 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "algomodule.pyx":99
+  /* "algomodule.pyx":100
  * 	# Ensure the inputs are of correct length
  * 	if len(header_hash) != 32 or len(mix_hash) != 32:
  * 		raise ValueError("header_hash and mix_hash must be 32 bytes")             # <<<<<<<<<<<<<<
  * 
  * 	# Declare C variables and memoryviews at the start of the function
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_header_hash_and_mix_hash_must_be); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_header_hash_and_mix_hash_must_be); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "algomodule.pyx":113
+  /* "algomodule.pyx":114
  * 
  * 	if not c_header_hash or not c_mix_hash:
  * 		raise MemoryError("Could not allocate memory for meraki_hash256")             # <<<<<<<<<<<<<<
  * 
  * 	try:
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_Could_not_allocate_memory_for_me); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_s_Could_not_allocate_memory_for_me); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
@@ -23866,257 +23884,257 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__20);
   __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(1, 1, __pyx_L1_error)
 
-  /* "algomodule.pyx":96
+  /* "algomodule.pyx":97
  * 
  * # The Python wrapper function for light_verify
  * def _meraki_hash(bytes header_hash, bytes mix_hash, uint64_t nonce):             # <<<<<<<<<<<<<<
  * 	# Ensure the inputs are of correct length
  * 	if len(header_hash) != 32 or len(mix_hash) != 32:
  */
-  __pyx_tuple__22 = PyTuple_Pack(9, __pyx_n_s_header_hash, __pyx_n_s_mix_hash, __pyx_n_s_nonce, __pyx_n_s_c_header_hash, __pyx_n_s_c_mix_hash, __pyx_n_s_result, __pyx_n_s_mv_header_hash, __pyx_n_s_mv_mix_hash, __pyx_n_s_result_bytes); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_tuple__22 = PyTuple_Pack(9, __pyx_n_s_header_hash, __pyx_n_s_mix_hash, __pyx_n_s_nonce, __pyx_n_s_c_header_hash, __pyx_n_s_c_mix_hash, __pyx_n_s_result, __pyx_n_s_mv_header_hash, __pyx_n_s_mv_mix_hash, __pyx_n_s_result_bytes); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);
   __Pyx_GIVEREF(__pyx_tuple__22);
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_meraki_hash, 96, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_meraki_hash, 97, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 97, __pyx_L1_error)
 
-  /* "algomodule.pyx":137
+  /* "algomodule.pyx":138
  * 		free(c_mix_hash)
  * 
  * def _ltc_scrypt(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	scrypt_1024_1_1_256(hash, output);
  */
-  __pyx_tuple__24 = PyTuple_Pack(2, __pyx_n_s_hash, __pyx_n_s_output); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_tuple__24 = PyTuple_Pack(2, __pyx_n_s_hash, __pyx_n_s_output); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_ltc_scrypt, 137, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_ltc_scrypt, 138, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 138, __pyx_L1_error)
 
-  /* "algomodule.pyx":142
+  /* "algomodule.pyx":143
  * 	return output[:32];
  * 
  * def _bcrypt_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	bcrypt_hash(hash, output);
  */
-  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_bcrypt_hash, 142, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_bcrypt_hash, 143, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 143, __pyx_L1_error)
 
-  /* "algomodule.pyx":147
+  /* "algomodule.pyx":148
  * 	return output[:32];
  * 
  * def _keccak_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_tuple__27 = PyTuple_Pack(3, __pyx_n_s_hash, __pyx_n_s_output, __pyx_n_s_input_len); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(3, __pyx_n_s_hash, __pyx_n_s_output, __pyx_n_s_input_len); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_keccak_hash, 147, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_keccak_hash, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 148, __pyx_L1_error)
 
-  /* "algomodule.pyx":153
+  /* "algomodule.pyx":154
  * 	return output[:32];
  * 
  * def _quark_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_quark_hash, 153, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_quark_hash, 154, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 154, __pyx_L1_error)
 
-  /* "algomodule.pyx":159
+  /* "algomodule.pyx":160
  * 	return output[:32];
  * 
  * def _skein_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_skein_hash, 159, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_skein_hash, 160, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 160, __pyx_L1_error)
 
-  /* "algomodule.pyx":165
+  /* "algomodule.pyx":166
  * 	return output[:32];
  * 
  * def _x11_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x11_hash, 165, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x11_hash, 166, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 166, __pyx_L1_error)
 
-  /* "algomodule.pyx":171
+  /* "algomodule.pyx":172
  * 	return output[:32];
  * 
  * def _groestl_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_groestl_hash, 171, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_groestl_hash, 172, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 172, __pyx_L1_error)
 
-  /* "algomodule.pyx":177
+  /* "algomodule.pyx":178
  * 	return output[:32];
  * 
  * def _mgroestl_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_mgroestl_hash, 177, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_mgroestl_hash, 178, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 178, __pyx_L1_error)
 
-  /* "algomodule.pyx":183
+  /* "algomodule.pyx":184
  * 	return output[:32];
  * 
  * def _blake_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_blake_hash, 183, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_blake_hash, 184, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 184, __pyx_L1_error)
 
-  /* "algomodule.pyx":189
+  /* "algomodule.pyx":190
  * 	return output[:32];
  * 
  * def _fugue_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_fugue_hash, 189, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_fugue_hash, 190, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 190, __pyx_L1_error)
 
-  /* "algomodule.pyx":195
+  /* "algomodule.pyx":196
  * 	return output[:32];
  * 
  * def _qubit_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_qubit_hash, 195, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_qubit_hash, 196, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 196, __pyx_L1_error)
 
-  /* "algomodule.pyx":201
+  /* "algomodule.pyx":202
  * 	return output[:32];
  * 
  * def _hefty1_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_hefty1_hash, 201, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_hefty1_hash, 202, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 202, __pyx_L1_error)
 
-  /* "algomodule.pyx":207
+  /* "algomodule.pyx":208
  * 	return output[:32];
  * 
  * def _shavite3_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_shavite3_hash, 207, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_shavite3_hash, 208, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 208, __pyx_L1_error)
 
-  /* "algomodule.pyx":213
+  /* "algomodule.pyx":214
  * 	return output[:32];
  * 
  * def _x13_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x13_hash, 213, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x13_hash, 214, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 214, __pyx_L1_error)
 
-  /* "algomodule.pyx":219
+  /* "algomodule.pyx":220
  * 	return output[:32];
  * 
  * def _nist5_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_nist5_hash, 219, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_nist5_hash, 220, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 220, __pyx_L1_error)
 
-  /* "algomodule.pyx":225
+  /* "algomodule.pyx":226
  * 	return output[:32];
  * 
  * def _x15_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x15_hash, 225, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x15_hash, 226, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(0, 226, __pyx_L1_error)
 
-  /* "algomodule.pyx":231
+  /* "algomodule.pyx":232
  * 	return output[:32];
  * 
  * def _fresh_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_fresh_hash, 231, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 231, __pyx_L1_error)
+  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_fresh_hash, 232, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 232, __pyx_L1_error)
 
-  /* "algomodule.pyx":237
+  /* "algomodule.pyx":238
  * 	return output[:32];
  * 
  * def _x14_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x14_hash, 237, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x14_hash, 238, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 238, __pyx_L1_error)
 
-  /* "algomodule.pyx":243
+  /* "algomodule.pyx":244
  * 	return output[:32];
  * 
  * def _neoscrypt_hash(hash):             # <<<<<<<<<<<<<<
- * 	cdef char output[32];
+ * 	cdef unsigned char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_neoscrypt_hash, 243, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 243, __pyx_L1_error)
+  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_neoscrypt_hash, 244, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 244, __pyx_L1_error)
 
-  /* "algomodule.pyx":249
+  /* "algomodule.pyx":250
  * 	return output[:32];
  * 
  * def _dcrypt_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef int input_len = len(hash);
  */
-  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_dcrypt_hash, 249, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 249, __pyx_L1_error)
+  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_dcrypt_hash, 250, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 250, __pyx_L1_error)
 
-  /* "algomodule.pyx":255
+  /* "algomodule.pyx":256
  * 	return output[:32];
  * 
  * def _bitblock_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	bitblock_hash(hash, output);
  */
-  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_bitblock_hash, 255, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 255, __pyx_L1_error)
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_bitblock_hash, 256, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 256, __pyx_L1_error)
 
-  /* "algomodule.pyx":260
+  /* "algomodule.pyx":261
  * 	return output[:32];
  * 
  * def _twe_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_twe_hash, 260, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_twe_hash, 261, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 261, __pyx_L1_error)
 
-  /* "algomodule.pyx":266
+  /* "algomodule.pyx":267
  * 	return output[:32];
  * 
  * def _threes_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	threes_hash(hash, output);
  */
-  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_threes_hash, 266, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 266, __pyx_L1_error)
+  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_threes_hash, 267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 267, __pyx_L1_error)
 
-  /* "algomodule.pyx":271
+  /* "algomodule.pyx":272
  * 	return output[:32]
  * 
  * def _jackpot_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32]
  * 	jackpot_hash(hash, output);
  */
-  __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_jackpot_hash, 271, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_jackpot_hash, 272, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 272, __pyx_L1_error)
 
-  /* "algomodule.pyx":276
+  /* "algomodule.pyx":277
  * 	return output[:32]
  * 
  * def _x17_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32]
  * 	x17_hash(hash, output);
  */
-  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x17_hash, 276, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x17_hash, 277, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) __PYX_ERR(0, 277, __pyx_L1_error)
 
-  /* "algomodule.pyx":281
+  /* "algomodule.pyx":282
  * 	return output[:32]
  * 
  * def _x16rv2_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32]
  * 	x16rv2_hash(hash, output);
  */
-  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x16rv2_hash, 281, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_algomodule_pyx, __pyx_n_s_x16rv2_hash, 282, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -25167,334 +25185,334 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Enum, __pyx_t_7) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":96
+  /* "algomodule.pyx":97
  * 
  * # The Python wrapper function for light_verify
  * def _meraki_hash(bytes header_hash, bytes mix_hash, uint64_t nonce):             # <<<<<<<<<<<<<<
  * 	# Ensure the inputs are of correct length
  * 	if len(header_hash) != 32 or len(mix_hash) != 32:
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_1_meraki_hash, 0, __pyx_n_s_meraki_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_1_meraki_hash, 0, __pyx_n_s_meraki_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_meraki_hash, __pyx_t_7) < 0) __PYX_ERR(0, 96, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_meraki_hash, __pyx_t_7) < 0) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":137
+  /* "algomodule.pyx":138
  * 		free(c_mix_hash)
  * 
  * def _ltc_scrypt(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	scrypt_1024_1_1_256(hash, output);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_3_ltc_scrypt, 0, __pyx_n_s_ltc_scrypt, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_3_ltc_scrypt, 0, __pyx_n_s_ltc_scrypt, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ltc_scrypt, __pyx_t_7) < 0) __PYX_ERR(0, 137, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ltc_scrypt, __pyx_t_7) < 0) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":142
+  /* "algomodule.pyx":143
  * 	return output[:32];
  * 
  * def _bcrypt_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	bcrypt_hash(hash, output);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_5_bcrypt_hash, 0, __pyx_n_s_bcrypt_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_5_bcrypt_hash, 0, __pyx_n_s_bcrypt_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bcrypt_hash, __pyx_t_7) < 0) __PYX_ERR(0, 142, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bcrypt_hash, __pyx_t_7) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":147
+  /* "algomodule.pyx":148
  * 	return output[:32];
  * 
  * def _keccak_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_7_keccak_hash, 0, __pyx_n_s_keccak_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_7_keccak_hash, 0, __pyx_n_s_keccak_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_keccak_hash, __pyx_t_7) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_keccak_hash, __pyx_t_7) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":153
+  /* "algomodule.pyx":154
  * 	return output[:32];
  * 
  * def _quark_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_9_quark_hash, 0, __pyx_n_s_quark_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_9_quark_hash, 0, __pyx_n_s_quark_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_quark_hash, __pyx_t_7) < 0) __PYX_ERR(0, 153, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_quark_hash, __pyx_t_7) < 0) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":159
+  /* "algomodule.pyx":160
  * 	return output[:32];
  * 
  * def _skein_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_11_skein_hash, 0, __pyx_n_s_skein_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_11_skein_hash, 0, __pyx_n_s_skein_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_skein_hash, __pyx_t_7) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_skein_hash, __pyx_t_7) < 0) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":165
+  /* "algomodule.pyx":166
  * 	return output[:32];
  * 
  * def _x11_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_13_x11_hash, 0, __pyx_n_s_x11_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_13_x11_hash, 0, __pyx_n_s_x11_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x11_hash, __pyx_t_7) < 0) __PYX_ERR(0, 165, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x11_hash, __pyx_t_7) < 0) __PYX_ERR(0, 166, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":171
+  /* "algomodule.pyx":172
  * 	return output[:32];
  * 
  * def _groestl_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_15_groestl_hash, 0, __pyx_n_s_groestl_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_15_groestl_hash, 0, __pyx_n_s_groestl_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_groestl_hash, __pyx_t_7) < 0) __PYX_ERR(0, 171, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_groestl_hash, __pyx_t_7) < 0) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":177
+  /* "algomodule.pyx":178
  * 	return output[:32];
  * 
  * def _mgroestl_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_17_mgroestl_hash, 0, __pyx_n_s_mgroestl_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_17_mgroestl_hash, 0, __pyx_n_s_mgroestl_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 178, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_mgroestl_hash, __pyx_t_7) < 0) __PYX_ERR(0, 177, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_mgroestl_hash, __pyx_t_7) < 0) __PYX_ERR(0, 178, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":183
+  /* "algomodule.pyx":184
  * 	return output[:32];
  * 
  * def _blake_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_19_blake_hash, 0, __pyx_n_s_blake_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 183, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_19_blake_hash, 0, __pyx_n_s_blake_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_blake_hash, __pyx_t_7) < 0) __PYX_ERR(0, 183, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_blake_hash, __pyx_t_7) < 0) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":189
+  /* "algomodule.pyx":190
  * 	return output[:32];
  * 
  * def _fugue_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_21_fugue_hash, 0, __pyx_n_s_fugue_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 189, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_21_fugue_hash, 0, __pyx_n_s_fugue_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_fugue_hash, __pyx_t_7) < 0) __PYX_ERR(0, 189, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_fugue_hash, __pyx_t_7) < 0) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":195
+  /* "algomodule.pyx":196
  * 	return output[:32];
  * 
  * def _qubit_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_23_qubit_hash, 0, __pyx_n_s_qubit_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_23_qubit_hash, 0, __pyx_n_s_qubit_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_qubit_hash, __pyx_t_7) < 0) __PYX_ERR(0, 195, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_qubit_hash, __pyx_t_7) < 0) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":201
+  /* "algomodule.pyx":202
  * 	return output[:32];
  * 
  * def _hefty1_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_25_hefty1_hash, 0, __pyx_n_s_hefty1_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_25_hefty1_hash, 0, __pyx_n_s_hefty1_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_hefty1_hash, __pyx_t_7) < 0) __PYX_ERR(0, 201, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_hefty1_hash, __pyx_t_7) < 0) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":207
+  /* "algomodule.pyx":208
  * 	return output[:32];
  * 
  * def _shavite3_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_27_shavite3_hash, 0, __pyx_n_s_shavite3_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_27_shavite3_hash, 0, __pyx_n_s_shavite3_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_shavite3_hash, __pyx_t_7) < 0) __PYX_ERR(0, 207, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_shavite3_hash, __pyx_t_7) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":213
+  /* "algomodule.pyx":214
  * 	return output[:32];
  * 
  * def _x13_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_29_x13_hash, 0, __pyx_n_s_x13_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_29_x13_hash, 0, __pyx_n_s_x13_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 214, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x13_hash, __pyx_t_7) < 0) __PYX_ERR(0, 213, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x13_hash, __pyx_t_7) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":219
+  /* "algomodule.pyx":220
  * 	return output[:32];
  * 
  * def _nist5_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_31_nist5_hash, 0, __pyx_n_s_nist5_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_31_nist5_hash, 0, __pyx_n_s_nist5_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nist5_hash, __pyx_t_7) < 0) __PYX_ERR(0, 219, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_nist5_hash, __pyx_t_7) < 0) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":225
+  /* "algomodule.pyx":226
  * 	return output[:32];
  * 
  * def _x15_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_33_x15_hash, 0, __pyx_n_s_x15_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_33_x15_hash, 0, __pyx_n_s_x15_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 226, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x15_hash, __pyx_t_7) < 0) __PYX_ERR(0, 225, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x15_hash, __pyx_t_7) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":231
+  /* "algomodule.pyx":232
  * 	return output[:32];
  * 
  * def _fresh_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_35_fresh_hash, 0, __pyx_n_s_fresh_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 231, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_35_fresh_hash, 0, __pyx_n_s_fresh_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 232, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_fresh_hash, __pyx_t_7) < 0) __PYX_ERR(0, 231, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_fresh_hash, __pyx_t_7) < 0) __PYX_ERR(0, 232, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":237
+  /* "algomodule.pyx":238
  * 	return output[:32];
  * 
  * def _x14_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_37_x14_hash, 0, __pyx_n_s_x14_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 237, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_37_x14_hash, 0, __pyx_n_s_x14_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 238, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x14_hash, __pyx_t_7) < 0) __PYX_ERR(0, 237, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x14_hash, __pyx_t_7) < 0) __PYX_ERR(0, 238, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":243
+  /* "algomodule.pyx":244
  * 	return output[:32];
  * 
  * def _neoscrypt_hash(hash):             # <<<<<<<<<<<<<<
- * 	cdef char output[32];
+ * 	cdef unsigned char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_39_neoscrypt_hash, 0, __pyx_n_s_neoscrypt_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__44)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 243, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_39_neoscrypt_hash, 0, __pyx_n_s_neoscrypt_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__44)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 244, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_neoscrypt_hash, __pyx_t_7) < 0) __PYX_ERR(0, 243, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_neoscrypt_hash, __pyx_t_7) < 0) __PYX_ERR(0, 244, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":249
+  /* "algomodule.pyx":250
  * 	return output[:32];
  * 
  * def _dcrypt_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef int input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_41_dcrypt_hash, 0, __pyx_n_s_dcrypt_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 249, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_41_dcrypt_hash, 0, __pyx_n_s_dcrypt_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_dcrypt_hash, __pyx_t_7) < 0) __PYX_ERR(0, 249, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_dcrypt_hash, __pyx_t_7) < 0) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":255
+  /* "algomodule.pyx":256
  * 	return output[:32];
  * 
  * def _bitblock_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	bitblock_hash(hash, output);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_43_bitblock_hash, 0, __pyx_n_s_bitblock_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 255, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_43_bitblock_hash, 0, __pyx_n_s_bitblock_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bitblock_hash, __pyx_t_7) < 0) __PYX_ERR(0, 255, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bitblock_hash, __pyx_t_7) < 0) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":260
+  /* "algomodule.pyx":261
  * 	return output[:32];
  * 
  * def _twe_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	cdef uint32_t input_len = len(hash);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_45_twe_hash, 0, __pyx_n_s_twe_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_45_twe_hash, 0, __pyx_n_s_twe_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_twe_hash, __pyx_t_7) < 0) __PYX_ERR(0, 260, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_twe_hash, __pyx_t_7) < 0) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":266
+  /* "algomodule.pyx":267
  * 	return output[:32];
  * 
  * def _threes_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32];
  * 	threes_hash(hash, output);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_47_threes_hash, 0, __pyx_n_s_threes_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 266, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_47_threes_hash, 0, __pyx_n_s_threes_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_threes_hash, __pyx_t_7) < 0) __PYX_ERR(0, 266, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_threes_hash, __pyx_t_7) < 0) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":271
+  /* "algomodule.pyx":272
  * 	return output[:32]
  * 
  * def _jackpot_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32]
  * 	jackpot_hash(hash, output);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_49_jackpot_hash, 0, __pyx_n_s_jackpot_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__49)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_49_jackpot_hash, 0, __pyx_n_s_jackpot_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__49)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 272, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_jackpot_hash, __pyx_t_7) < 0) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_jackpot_hash, __pyx_t_7) < 0) __PYX_ERR(0, 272, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":276
+  /* "algomodule.pyx":277
  * 	return output[:32]
  * 
  * def _x17_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32]
  * 	x17_hash(hash, output);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_51_x17_hash, 0, __pyx_n_s_x17_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__50)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_51_x17_hash, 0, __pyx_n_s_x17_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__50)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 277, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x17_hash, __pyx_t_7) < 0) __PYX_ERR(0, 276, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x17_hash, __pyx_t_7) < 0) __PYX_ERR(0, 277, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "algomodule.pyx":281
+  /* "algomodule.pyx":282
  * 	return output[:32]
  * 
  * def _x16rv2_hash(hash):             # <<<<<<<<<<<<<<
  * 	cdef char output[32]
  * 	x16rv2_hash(hash, output);
  */
-  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_53_x16rv2_hash, 0, __pyx_n_s_x16rv2_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__51)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 281, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_10algomodule_53_x16rv2_hash, 0, __pyx_n_s_x16rv2_hash, NULL, __pyx_n_s_algomodule, __pyx_d, ((PyObject *)__pyx_codeobj__51)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x16rv2_hash, __pyx_t_7) < 0) __PYX_ERR(0, 281, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_x16rv2_hash, __pyx_t_7) < 0) __PYX_ERR(0, 282, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
   /* "algomodule.pyx":1
- * from libc.stdint cimport uint32_t, int64_t, uint8_t, uint64_t             # <<<<<<<<<<<<<<
+ * # distutils: language = c++             # <<<<<<<<<<<<<<
+ * from libc.stdint cimport uint32_t, int64_t, uint8_t, uint64_t
  * from libc.stdlib cimport malloc, free
- * from libc.string cimport memcpy
  */
   __pyx_t_7 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
