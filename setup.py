@@ -7,7 +7,9 @@ ROOT_DIR = os.path.dirname(__file__)
 if ROOT_DIR == '':
   ROOT_DIR = '.'
 
-SOURCES = [y for x in os.walk(ROOT_DIR) for y in glob(os.path.join(x[0], '*.c'))]
+C_SOURCES = [y for x in os.walk(ROOT_DIR) for y in glob(os.path.join(x[0], '*.c'))]
+CPP_SOURCES = [y for x in os.walk(ROOT_DIR) for y in glob(os.path.join(x[0], '*.cpp'))]
+SOURCES = C_SOURCES + CPP_SOURCES
 INCLUDE_DIRS = [os.path.join(ROOT_DIR, o) for o in os.listdir(ROOT_DIR) if os.path.isdir(os.path.join(ROOT_DIR, o))]
 EXCLUDE_SOURCES = [
     os.path.join(ROOT_DIR, 'src', 'sha3', 'haval_helper.c'),
