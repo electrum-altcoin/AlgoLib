@@ -24,12 +24,10 @@
 
 namespace meraki
 {
-constexpr auto revision = MERAKI_REVISION;
-
-static constexpr int epoch_length = MERAKI_EPOCH_LENGTH;
-static constexpr int light_cache_item_size = MERAKI_LIGHT_CACHE_ITEM_SIZE;
-static constexpr int full_dataset_item_size = MERAKI_FULL_DATASET_ITEM_SIZE;
-static constexpr int num_dataset_accesses = MERAKI_NUM_DATASET_ACCESSES;
+static const int epoch_length = MERAKI_EPOCH_LENGTH;
+static const int light_cache_item_size = MERAKI_LIGHT_CACHE_ITEM_SIZE;
+static const int full_dataset_item_size = MERAKI_FULL_DATASET_ITEM_SIZE;
+static const int num_dataset_accesses = MERAKI_NUM_DATASET_ACCESSES;
 
 using epoch_context = meraki_epoch_context;
 using epoch_context_full = meraki_epoch_context_full;
