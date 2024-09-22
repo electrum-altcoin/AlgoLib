@@ -80,7 +80,7 @@ void update_local_context_full(int epoch_number)
 }
 }  // namespace
 
-const meraki_epoch_context* meraki_get_global_epoch_context(int epoch_number) noexcept
+const meraki_epoch_context* meraki_get_global_epoch_context(int epoch_number) NOEXCEPT
 {
     // Check if local context matches epoch number.
     if (!thread_local_context || thread_local_context->epoch_number != epoch_number)
@@ -89,7 +89,7 @@ const meraki_epoch_context* meraki_get_global_epoch_context(int epoch_number) no
     return thread_local_context.get();
 }
 
-const meraki_epoch_context_full* meraki_get_global_epoch_context_full(int epoch_number) noexcept
+const meraki_epoch_context_full* meraki_get_global_epoch_context_full(int epoch_number) NOEXCEPT
 {
     // Check if local context matches epoch number.
     if (!thread_local_context_full || thread_local_context_full->epoch_number != epoch_number)
