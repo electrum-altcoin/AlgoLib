@@ -21,7 +21,6 @@ extensions = [
         "algomodule",
         include_dirs=INCLUDE_DIRS,
         sources=list(filter(lambda x: x not in EXCLUDE_SOURCES, SOURCES)),
-        extra_compile_args=["-std=c++11"],
         language="c++",
     )
 ]
