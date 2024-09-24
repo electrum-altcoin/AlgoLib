@@ -1,4 +1,5 @@
 build
 wheelhouse/
 dist/
-src/algomodule.egg-info/
+algomodule.egg-info/
+algomodule/__pycache__/
