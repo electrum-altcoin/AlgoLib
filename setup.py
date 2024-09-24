@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import os
-import sys
 from glob import glob
 from setuptools import setup, Extension
 
@@ -19,33 +18,39 @@ def scandir(dir, files=[]):
     return files
 
 
+def getFiles(folder, extension):
+    res =  [y for x in os.walk(folder) for y in glob(os.path.join(x[0], extension))]
+
+    if 'sha3' in folder:
+        EXCLUDE_SOURCES = [
+            os.path.join(folder, 'haval_helper.c'),
+            os.path.join(folder, 'md_helper.c'),
+        ]
+        return list(filter(lambda x: x not in EXCLUDE_SOURCES, res))
+    return res
+
 # generate an Extension object from its dotted name
 def makeExtension(extName):
     EXT_DIR = extName.replace(".", os.path.sep)
-    SOURCES =  [y for x in os.walk(extName.replace(".", os.path.sep)) for y in glob(os.path.join(x[0], '*.c'))]
-    SOURCES += [y for x in os.walk(extName.replace(".", os.path.sep)) for y in glob(os.path.join(x[0], '*.cpp'))]
-    EXCLUDE_SOURCES = [
-        os.path.join(EXT_DIR, 'sha3', 'haval_helper.c'),
-        os.path.join(EXT_DIR, 'sha3', 'md_helper.c'),
-    ]
-
-    LANGUAGE = None,
+    SOURCES = getFiles(EXT_DIR, '*.c') + getFiles(EXT_DIR, '*.cpp')
+    LANGUAGE = None
     EXTRA_COMPILE_ARGS = []
-    
+
     is_cpp = [item for item in SOURCES if any([word in item for word in ['cpp']])]
     if is_cpp:
-        print(SOURCES)
         LANGUAGE = 'c++'
         EXTRA_COMPILE_ARGS = ['-std=c++11']
         SOURCES += [EXT_DIR+'.cpp']
     else:
         SOURCES += [EXT_DIR+'.c']
+        PARENT_DIR = os.path.join(EXT_DIR, '..')
+        SOURCES += getFiles(os.path.join(PARENT_DIR, 'core'), '*.c')
+        SOURCES += getFiles(os.path.join(PARENT_DIR, 'sha3'), '*.c')
 
-    print(SOURCES)
     return Extension(
         extName,
         include_dirs = ["."],
-        sources=list(filter(lambda x: x not in EXCLUDE_SOURCES, SOURCES)),
+        sources=SOURCES,
         extra_compile_args=EXTRA_COMPILE_ARGS,
         language=LANGUAGE,
     )
@@ -61,7 +66,37 @@ setup(
     packages = [
       'algomodule',
       'algomodule.core',
+      'algomodule.threes',
+      'algomodule.bcrypt',
+      'algomodule.bitblock',
+      'algomodule.blake',
+      'algomodule.dcrypt',
+      'algomodule.fresh',
+      'algomodule.fugue',
+      'algomodule.groestl',
+      'algomodule.hefty1',
+      'algomodule.jackpot',
+      'algomodule.keccak',
       'algomodule.meraki',
+      'algomodule.meraki.meraki',
+      'algomodule.meraki.keccak',
+      'algomodule.meraki.support',
+      'algomodule.neoscrypt',
+      'algomodule.nist5',
+      'algomodule.quark',
+      'algomodule.qubit',
+      'algomodule.scrypt',
+      'algomodule.sha256',
+      'algomodule.sha3',
+      'algomodule.shavite3',
+      'algomodule.skein',
+      'algomodule.twe',
+      'algomodule.x11',
+      'algomodule.x13',
+      'algomodule.x14',
+      'algomodule.x15',
+      'algomodule.x16rv2',
+      'algomodule.x17'
     ],
     ext_modules=extensions,
     #cmdclass = {'build_ext': build_ext},
