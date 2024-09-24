@@ -2,3 +2,4 @@ build
 wheelhouse/
 dist/
 algomodule.egg-info/
+algomodule/__pycache__/
